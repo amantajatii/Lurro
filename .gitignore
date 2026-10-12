@@ -1,0 +1,13 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+dub/
+PRD-Lurro.md
+Lurro_P0_Contract_Policy_*.md
+contracts/out/
+contracts/cache/
+/cache/
+contracts/broadcast/
+contracts/lib/
+contracts/node_modules/

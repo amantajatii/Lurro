@@ -1,0 +1,11 @@
+{
+  "name": "lurro-contract-checks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "forge test && node test/terms-hash.mjs"
+  },
+  "devDependencies": {
+    "viem": "2.57.4"
+  }
+}
