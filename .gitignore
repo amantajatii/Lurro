@@ -11,3 +11,4 @@ contracts/cache/
 contracts/broadcast/
 contracts/lib/
 contracts/node_modules/
+contracts/.testnet/

@@ -1,6 +1,6 @@
 # Lurro ProjectVault — P0 v1.2
 
-Unaudited Solidity prototype. Local tests are not an independent security review or proof of Arc integration. No live vault or payment is claimed. Dub code/assets are not used.
+Unaudited Solidity prototype. Local tests are not an independent security review. A separately executed Arc Testnet integration self-test has a deployed, source-verified vault and successful test-USDC payout/refund receipts; see [TESTNET-PROOF.md](TESTNET-PROOF.md). No Mainnet operation or independent human verification is claimed. Dub code/assets are not used.
 
 ## Reproduce
 
@@ -72,6 +72,8 @@ Use current contract state, effective status and successful receipts as authorit
 
 ## Tests
 
+See [SECURITY-REVIEW.md](SECURITY-REVIEW.md) for the internal threat review, additional adversarial tests and Slither alert triage. This is not an independent third-party audit.
+
 - Unit and fuzz: permissions, constructor validation, exact review/challenge/arbitration boundaries, evidence revision limits, immutable payout addresses, zero allocations, payout/refund failures, proposal expiry/revocation/staleness, deposit limits and surplus refunds.
 - Stateful handler: successful deposit/reserve/review/dispute/cancel/payout/refund sequences, time passage, unsolicited donations and failed payouts. Independent ghost counters and token balances check the ledger/destinations/version; handler self-check proves both payout and refund are reachable. Campaign defaults to 128 runs × 64 calls, `fail_on_revert = true`.
 - `test/terms-hash.mjs` builds an independent viem tuple/literal agreement and compares encoded bytes/hash against a Solidity-generated vector in `out/`. Also checks changes to recipient, amount, deadline, recovery policy, chain and vault.
@@ -88,7 +90,7 @@ Simulation only (no `--broadcast`):
 LURRO_TERMS_FILE=out/project-terms.hex forge script script/Deploy.s.sol:DeployProjectVault --rpc-url arc_testnet --account <funder-keystore>
 ```
 
-Only broadcast once actual parties, evidence policies and wallets are agreed. Then verify the source, read back terms/hash, collect each party's independent acceptance, and test every settlement/exit path with testnet USDC. No deployment has been performed by this implementation task.
+Only broadcast once parties, evidence policies and wallets are agreed. Then verify the source, read back terms/hash, collect each party's acceptance, and test every settlement/exit path with testnet USDC. The completed technical self-test used six automated wallets; its demonstrated paths and remaining live-test gaps are recorded in [TESTNET-PROOF.md](TESTNET-PROOF.md).
 
 Arc references: [connection details](https://docs.arc.io/arc/references/connect-to-arc), [USDC address](https://docs.arc.io/arc/references/contract-addresses), [EVM differences](https://docs.arc.io/arc/references/evm-differences).
 
