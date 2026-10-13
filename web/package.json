@@ -12,11 +12,18 @@
   "dependencies": {
     "@fontsource-variable/inter": "5.3.0",
     "@fontsource-variable/manrope": "5.3.0",
+    "@rainbow-me/rainbowkit": "2.2.11",
+    "@tanstack/react-query": "5.104.2",
+    "@x402/core": "2.28.0",
+    "@x402/evm": "2.28.0",
+    "@x402/extensions": "2.28.0",
+    "@x402/svm": "2.28.0",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-icons": "5.7.0",
-    "viem": "2.57.5"
+    "viem": "2.57.5",
+    "wagmi": "2.19.5"
   },
   "devDependencies": {
     "@types/node": "26.6.5",
@@ -25,5 +32,11 @@
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.0",
     "typescript": "5.9.3"
+  },
+  "overrides": {
+    "ws": "8.22.0",
+    "cuer": {
+      "qr": "0.5.5"
+    }
   }
 }
