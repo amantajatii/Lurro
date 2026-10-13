@@ -18,3 +18,4 @@ web/out/
 web/*.tsbuildinfo
 web/AGENTS.md
 web/next-env.d.ts
+/brag-output*/
