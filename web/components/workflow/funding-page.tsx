@@ -1,0 +1,18 @@
+"use client";
+import { useState } from "react";
+import { AppCard } from "../ui/card";
+import { Button } from "../ui/button";
+import { FormField } from "../ui/form-field";
+import { WorkflowFrame, Metrics, MilestoneHeading, ActionButton, Deadline, type WorkflowContext } from "./workflow-frame";
+import { depositCapacity, parseAmount } from "../../lib/workflow";
+import { formatUSDC, shortAddress } from "../../lib/vault-reader";
+export function FundingPage() { return <WorkflowFrame section="funding" title="Funding" description="Deposit test USDC, reserve agreed milestones, and track the funds held in your vault.">{ctx => <FundingContent ctx={ctx} />}</WorkflowFrame>; }
+function FundingContent({ ctx }: { ctx: WorkflowContext }) {
+  const { snapshot:s } = ctx; const [value,setValue] = useState(""); let amount: bigint | undefined; let error = "";
+  try { if (value) amount = parseAmount(value); } catch(e) { error = e instanceof Error ? e.message : "Invalid amount."; }
+  const capacity = depositCapacity(s); const deposit = { name:"deposit" as const,label:"Deposit USDC",amount }; const approve = { name:"approveUSDC" as const,label:"Approve exact USDC amount",amount };
+  return <><Metrics items={[{ label:"Available",value:s.vault.accounting[1],note:"Unreserved funds in the vault" },{ label:"Reserved",value:s.vault.accounting[2],note:"Allocated to active milestones" },{ label:"Remaining funding capacity",value:capacity,note:"Current unpaid scope less held funding" }]} />
+    <AppCard><h2>Fund the agreement</h2><p>Only the original funder can deposit: {shortAddress(s.vault.terms.funder)}. Approving USDC and depositing are two separate wallet transactions.</p><div className="workflow-deadline"><span>Funder token balance</span><strong>{formatUSDC(s.balance)} USDC</strong></div><div className="workflow-deadline"><span>Allowance to this vault</span><strong>{formatUSDC(s.allowance)} USDC</strong></div><div className="workflow-form"><FormField label="Deposit amount (USDC)" value={value} onChange={setValue} placeholder="0.00" inputMode="decimal" />{error && <p className="dash-field-error" role="alert">{error}</p>}{amount && amount > capacity && <p role="alert">This amount exceeds the remaining funding capacity.</p>}{amount && amount > s.balance && <p role="alert">The funder has insufficient token balance for this amount.</p>}</div><div className="workflow-actions"><Button disabled={!amount || !ctx.eligible(approve) || (amount <= s.allowance)} onClick={() => ctx.select(approve)}>Approve USDC</Button><Button variant="primary" disabled={!amount || !ctx.eligible(deposit)} onClick={() => ctx.select(deposit)}>Review deposit</Button></div><p className="workflow-note">Deposit amounts use 6 decimal places. Gas also uses USDC from the same wallet balance; leave enough for transaction fees.</p></AppCard>
+    {s.vault.milestones.map((m,i) => <AppCard key={i}><MilestoneHeading snapshot={s} index={i} /><Deadline label="Submission deadline" seconds={m.submissionDeadline} /><p>The full milestone allocation must be available. Earlier planned milestones must be reserved or closed first. Reservation is permissionless after agreement lock.</p><ActionButton ctx={ctx} action={{ name:"reserveMilestone",label:`Reserve milestone ${i+1}`,milestone:i }} /></AppCard>)}
+    <Metrics items={[{ label:"Lifetime deposited",value:s.vault.accounting[0] },{ label:"Settled to recipients",value:s.vault.accounting[4] },{ label:"Refunded to funder",value:s.vault.accounting[5] }]} /></>;
+}
