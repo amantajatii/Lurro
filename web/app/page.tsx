@@ -53,7 +53,6 @@ export default function Home() {
     <header className="site-header"><div className="header-inner">
       <a href="#" className="brand" aria-label="Lurro home"><Image src="/lurro-logo.webp" width={114} height={40} alt="" unoptimized loading="eager" /></a>
       <Navigation />
-      <SpecularLink href="#proof" className="button-small header-cta">Explore the proof <Arrow diagonal /></SpecularLink>
     </div></header>
 
     <main id="main">
@@ -63,7 +62,7 @@ export default function Home() {
           <a href="#proof" className="announcement"><span className="announcement-platform">Built on <Image src="/arc-logo.webp" width={47} height={16} alt="Arc" unoptimized /></span><span>· Proven on Testnet.</span><span className="announcement-more">Explore the proof <Arrow diagonal /></span></a>
           <h1 id="hero-title">Every fund, right where it belongs.</h1>
           <p className="hero-description">A clearer path from project agreement to payment.<br className="desktop-break" /> Secure the funds, protect the recipients, and prove the payout.</p>
-          <div className="hero-actions"><SpecularLink href="/app/">Explore Lurro</SpecularLink><a className="button button-secondary" href="#how-it-works">See how it works</a></div>
+          <div className="hero-actions"><SpecularLink href="/app/">Open your workspace <Arrow /></SpecularLink><a className="button button-secondary" href="#how-it-works">See how it works</a></div>
           <p className="hero-note">Project funding infrastructure. Powered by USDC.</p>
         </div>
 
@@ -111,7 +110,7 @@ export default function Home() {
 
       <section className="faq-section content-width" id="faq"><div className="faq-intro"><span className="eyebrow">LET’S MAKE IT CLEAR.</span><h2>Good questions.<br />Straight answers.</h2><p>Understand the rules—and their limits—<br className="desktop-break" /> before putting funds into a vault.</p><a className="text-link" href={`${github}/blob/main/contracts/README.md`} target="_blank" rel="noopener noreferrer">Explore the protocol docs <Arrow diagonal /></a></div><div className="faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span className="faq-plus" aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
 
-      <section className="closing-section frame"><div className="closing-path" aria-hidden="true"><Mark /></div><div className="closing-path closing-path-secondary" aria-hidden="true"><Mark /></div><div className="closing-path closing-path-tertiary" aria-hidden="true"><Mark /></div><span className="eyebrow">EVERY AGREEMENT DESERVES A CLEAR ENDPOINT.</span><h2>Make every authorized<br />payout accountable.</h2><SpecularLink className="specular-glass" href={vault} target="_blank" rel="noopener noreferrer">Explore the Testnet proof <Arrow diagonal /></SpecularLink><p>Only deposited funds are protected by the vault’s payout rules.</p></section>
+      <section className="closing-section frame"><div className="closing-path" aria-hidden="true"><Mark /></div><div className="closing-path closing-path-secondary" aria-hidden="true"><Mark /></div><div className="closing-path closing-path-tertiary" aria-hidden="true"><Mark /></div><span className="eyebrow">EVERY AGREEMENT DESERVES A CLEAR ENDPOINT.</span><h2>Make every authorized<br />payout accountable.</h2><SpecularLink className="specular-glass" href="/app/new/">Create a project <Arrow /></SpecularLink><p>Only deposited funds are protected by the vault’s payout rules.</p></section>
     </main>
 
     <footer className="site-footer content-width"><div className="footer-top"><a href="#" className="brand" aria-label="Lurro home"><Image src="/lurro-logo.webp" width={114} height={40} alt="" unoptimized loading="eager" /></a><p>Every fund, right where it belongs.</p><div><a href={github} target="_blank" rel="noopener noreferrer">GitHub <Arrow diagonal /></a><a href={`${github}/blob/main/contracts/SECURITY-REVIEW.md`} target="_blank" rel="noopener noreferrer">Review & limitations <Arrow diagonal /></a></div></div><div className="footer-bottom"><span>© 2026 Lurro</span><span>Arc Testnet prototype. Not independently audited.</span><a href="#main">Back to top ↑</a></div></footer>

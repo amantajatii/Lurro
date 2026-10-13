@@ -464,3 +464,66 @@ h1 { font-size: clamp(38px, 4.1vw, 57px); font-weight: 580; letter-spacing: -.05
   .preview-tab-icon svg { width: 12px; height: 12px; }
   .preview-rail > span svg { width: 16px; height: 16px; }
 }
+
+/* Dub-inspired navigation hierarchy, implemented with Lurro's own components. */
+.landing-nav-region { display:contents; }
+.landing-navigation { flex:1; justify-content:center; gap:12px; }
+.landing-navigation > a,.landing-nav-group > button { padding:10px 12px; border:0; border-radius:7px; font:500 13px var(--body); color:var(--text); background:transparent; white-space:nowrap; }
+.landing-nav-group > button { display:flex; align-items:center; gap:6px; cursor:pointer; }
+.landing-nav-group > button svg { width:13px; height:13px; transition:transform .18s; }
+.landing-nav-group > button[aria-expanded="true"] svg { transform:rotate(180deg); }
+.landing-navigation > a:hover,.landing-nav-group > button:hover,.landing-nav-group > button[aria-expanded="true"] { background:#f5f2f9; color:var(--ink); }
+.landing-header-actions { display:flex; align-items:center; gap:10px; }
+.landing-header-actions .button { min-height:38px; padding:8px 15px; font-size:12px; white-space:nowrap; }
+.landing-mega-menu { position:absolute; left:0; right:0; top:calc(100% - 4px); padding:20px; background:#fff; border-radius:16px; box-shadow:0 14px 50px #281b3d18; color:var(--ink); animation:landing-menu-enter .16s ease-out; }
+.landing-menu-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 4px 16px; }
+.landing-menu-heading > span { font-size:10px; letter-spacing:.12em; color:var(--muted); }
+.landing-menu-heading > a,.landing-menu-footer > a { display:flex; gap:8px; align-items:center; font-size:12px; font-weight:550; color:var(--violet); }
+.landing-menu-heading svg,.landing-menu-footer svg { width:15px; height:15px; }
+.landing-feature-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.landing-feature-link { display:flex; flex-direction:column; align-items:flex-start; gap:12px; padding:24px; border-radius:12px; background:#f8f7fa; transition:background .15s; }
+.landing-feature-link:hover { background:#f0ecf8; }
+.landing-feature-icon { display:grid; place-items:center; width:42px; height:42px; border-radius:10px; }
+.landing-feature-icon svg { width:23px; height:23px; }
+.landing-feature-violet { background:#e9dcfa; color:#7652ba; }
+.landing-feature-blue { background:#e2e3fa; color:#6264b5; }
+.landing-feature-peach { background:#f8dece; color:#a66d50; }
+.landing-feature-link strong { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; font-size:15px; font-weight:600; }
+.landing-feature-link strong svg { width:15px; height:15px; color:var(--muted); }
+.landing-feature-link > span:last-child { font-size:12px; line-height:1.7; color:var(--muted); }
+.landing-workflow-links { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:14px 0; }
+.landing-workflow-links a { display:flex; align-items:center; gap:10px; padding:12px; border-radius:8px; font-size:12px; }
+.landing-workflow-links a:hover { background:#f8f7fa; }
+.landing-workflow-links svg { width:17px; height:17px; color:var(--muted); }
+.landing-workflow-links svg:last-child { margin-left:auto; width:14px; }
+.landing-menu-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; background:#f8f7fa; border-radius:8px; padding:12px 16px; }
+.landing-menu-footer > span { font-size:11px; color:var(--muted); }
+.landing-mobile-actions { display:none; }
+@keyframes landing-menu-enter { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:1000px) {
+  .header-inner { gap:12px; }
+  .landing-navigation { gap:2px; }
+  .landing-navigation > a,.landing-nav-group > button { font-size:12px; padding-inline:8px; }
+  .landing-header-actions .button { padding-inline:12px; }
+}
+@media(max-width:760px) {
+  .landing-header-actions { margin-left:auto; }
+  .landing-header-actions .landing-create-project { display:none; }
+  .landing-header-actions .landing-open-app { display:inline-flex; }
+  .landing-navigation { top:100%; left:0; right:0; max-height:calc(100dvh - 90px); overflow-y:auto; padding:16px; gap:4px; border:0; border-radius:12px; box-shadow:0 14px 40px #281b3d18; }
+  .landing-nav-group > button,.landing-navigation > a { width:100%; justify-content:space-between; padding:14px 8px; font-size:14px; }
+  .landing-mega-menu { position:static; padding:8px 0; box-shadow:none; border-radius:0; animation:none; }
+  .landing-menu-heading { padding:8px; flex-wrap:wrap; }
+  .landing-feature-grid { grid-template-columns:1fr; gap:6px; }
+  .landing-feature-link { display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:12px; }
+  .landing-feature-icon { grid-row:span 2; width:36px; height:36px; border-radius:8px; }
+  .landing-feature-link strong { font-size:13px; }
+  .landing-feature-link > span:last-child { font-size:11px; }
+  .landing-workflow-links { grid-template-columns:1fr; gap:0; padding:6px 0; }
+  .landing-menu-footer { padding:12px; flex-wrap:wrap; }
+  .landing-mobile-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding-top:12px; }
+  .landing-mobile-actions .button { font-size:12px; padding:10px; min-height:42px; }
+  .menu-toggle { margin-left:0; }
+}
+@media(prefers-reduced-motion:reduce) { .landing-mega-menu { animation:none; } .landing-nav-group > button svg { transition:none; } }
+@media(min-width:761px) and (max-width:900px) { .landing-header-actions .landing-create-project { display:none; } }
