@@ -8,13 +8,14 @@ import { AppPageHeading } from "../ui/page-heading";
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { HiOutlineFolder, HiOutlinePlus, HiOutlineArrowUpRight, HiOutlineWallet, HiOutlineDocumentText, HiOutlineReceiptPercent, HiOutlineShieldCheck, HiOutlineMagnifyingGlass, HiOutlineArrowPath, HiOutlineXMark, HiOutlineChevronDown, HiOutlineArrowRight, HiOutlineLink, HiOutlineExclamationTriangle, HiOutlineCheckCircle, HiOutlineClipboardDocument } from "react-icons/hi2";
 import { addressFrom, chain, explorer, formatUSDC, pendingFor, proofVault, readVault, rolesFor, shortAddress, statuses, vaultStatus, type Vault } from "../../lib/vault-reader";
+import { readProjectBookmarks, saveProjectBookmarks } from "../../lib/project-bookmarks";
 import { projectRoute } from "../../lib/project-routes";
 import { FormField } from "../ui/form-field";
 import { AppShell } from "../workspace/app-shell";
 import { useWallet } from "./use-wallet";
 
 type Item = { address: string; data?: Vault; error?: string; loading: boolean };
-const storageKey = "lurro:testnet:linked-vaults:v1";
+
 export function Dashboard() {
   const wallet = useWallet();
   const [items, setItems] = useState<Item[]>([]);
@@ -42,13 +43,10 @@ export function Dashboard() {
   }
   useEffect(() => {
     try {
-      const saved: unknown = JSON.parse(localStorage.getItem(storageKey) || "[]");
-      if (Array.isArray(saved)) {
-        const addresses = [...new Set(saved.filter((x): x is string => typeof x === "string").flatMap(x => { try { return [addressFrom(x)]; } catch { return []; } }))].slice(0, 12);
-        // Hydrate the external browser bookmark list once, then replace it with live RPC reads.
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        if (addresses.length) void load(addresses);
-      }
+      const addresses = readProjectBookmarks();
+      // Hydrate only addresses, then obtain live accounting from Arc.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (addresses.length) void load(addresses);
     } catch { /* Storage is optional; no financial state is stored. */ }
     // This ref is a request generation counter, not a DOM ref; invalidate the latest request on unmount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,7 +59,7 @@ export function Dashboard() {
       if (currentAddresses.current.includes(address)) { setImportError("This vault is already linked."); return; }
       if (currentAddresses.current.length >= 12) { setImportError("You can link up to 12 vaults in this workspace."); return; }
       const addresses = [...currentAddresses.current, address];
-      try { localStorage.setItem(storageKey, JSON.stringify(addresses)); } catch { /* Reads still work if storage is blocked. */ }
+      try { saveProjectBookmarks(addresses); } catch { /* Reads still work if storage is blocked. */ }
       setImportAddress(""); dialog.current?.close();
       await load(addresses);
     } catch (e) { setImportError(e instanceof Error ? e.message : "Enter a valid vault address."); }
@@ -72,7 +70,7 @@ export function Dashboard() {
     generation.current++;
     setItems(current => current.filter(x => x.address !== address));
     setSelected(undefined);
-    try { localStorage.setItem(storageKey, JSON.stringify(addresses)); } catch { /* Optional storage. */ }
+    try { saveProjectBookmarks(addresses); } catch { /* Optional storage. */ }
     if (items.some(x => x.loading)) void load(addresses);
   }
   const loading = items.some(x => x.loading);

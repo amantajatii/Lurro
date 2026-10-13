@@ -13,7 +13,8 @@ import { FormField } from "../ui/form-field";
 import { useWallet } from "../dashboard/use-wallet";
 import { arcClient as client } from "../../lib/arc-client";
 import { buildProject, completedProjectSteps, validatePeople, validateRecipients, type ProjectDraft, type ProjectReview, type RecipientDraft, type MilestoneDraft } from "../../lib/project-draft";
-import { addressFrom, chain, explorer, formatUSDC, shortAddress } from "../../lib/vault-reader";
+import { chain, explorer, formatUSDC, shortAddress } from "../../lib/vault-reader";
+import { readProjectBookmarks, saveProjectBookmarks } from "../../lib/project-bookmarks";
 import { projectRoute } from "../../lib/project-routes";
 import { vaultAbi } from "../../lib/vault-abi";
 import { deploymentAbi, vaultBytecode } from "../../lib/vault-deployment";
@@ -89,9 +90,7 @@ export function CreateProject() {
       setHash(receipt.transactionHash); setAddress(receipt.contractAddress); setPhase("confirmed");
       try { sessionStorage.removeItem("lurro:pending-creation:v1"); } catch { /* Optional storage. */ }
       try {
-        const raw: unknown = JSON.parse(localStorage.getItem("lurro:testnet:linked-vaults:v1") || "[]");
-        const saved = Array.isArray(raw) ? raw.filter((x): x is string => typeof x === "string").flatMap(x => { try { return [addressFrom(x)]; } catch { return []; } }) : [];
-        localStorage.setItem("lurro:testnet:linked-vaults:v1", JSON.stringify([...new Set([receipt.contractAddress, ...saved])].slice(0, 12)));
+        saveProjectBookmarks([receipt.contractAddress, ...readProjectBookmarks()]);
       } catch { setBookmarkWarning(true); }
     } catch (e) { setError(e instanceof Error ? e.message.split("\n")[0] : "Receipt could not be read. Check the explorer and retry the receipt read."); setPhase("idle"); }
   }

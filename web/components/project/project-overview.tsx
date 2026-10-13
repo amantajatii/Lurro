@@ -13,6 +13,7 @@ import { FormField } from "../ui/form-field";
 import { useProjectRead } from "./use-project-read";
 import { AppShell } from "../workspace/app-shell";
 import { addressFrom, chain, explorer, formatUSDC, proofVault, readVault, rolesFor, shortAddress, statuses, vaultStatus } from "../../lib/vault-reader";
+import { readProjectBookmarks, saveProjectBookmarks } from "../../lib/project-bookmarks";
 import { agreementRoute, projectRoute } from "../../lib/project-routes";
 import { chainDate, projectNextSteps, projectOverview } from "../../lib/project-overview";
 const milestoneNotes = ["Scope is agreed; funds are not yet reserved.", "The full milestone allocation is reserved.", "Evidence has been submitted; review or timeout escalation may be due.", "Evidence was rejected; check the resubmission deadline.", "Verifier approved; the challenge window is still open.", "An arbitration decision or timeout fallback is pending.", "Ready for atomic payout to all assigned recipients.", "The milestone was settled to its assigned recipients.", "This milestone is cancelled; its rights will not be paid."];
@@ -37,11 +38,10 @@ export function ProjectOverview() {
   function save() {
     if (!vault) return;
     try {
-      const raw: unknown = JSON.parse(localStorage.getItem("lurro:testnet:linked-vaults:v1") || "[]");
-      const saved = Array.isArray(raw) ? [...new Set(raw.filter((x): x is string => typeof x === "string").flatMap(x => { try { return [addressFrom(x)]; } catch { return []; } }))] : [];
+      const saved = readProjectBookmarks();
       if (saved.includes(vault.address)) { setNotice("This vault is already saved to your dashboard."); return; }
       if (saved.length >= 12) { setNotice("Your dashboard already has 12 vaults. Unlink one before saving this project."); return; }
-      localStorage.setItem("lurro:testnet:linked-vaults:v1", JSON.stringify([...saved, vault.address])); setNotice("Project saved to your dashboard in this browser.");
+      saveProjectBookmarks([...saved, vault.address]); setNotice("Project saved to your dashboard in this browser.");
     } catch { setNotice("Browser storage is unavailable. Keep the project link to return to this vault."); }
   }
   return <AppShell title="Project overview" mainId="overview-main" activePage="overview" className="overview-shell" mainClassName="overview-main" projectAddress={address}>

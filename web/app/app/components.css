@@ -21,3 +21,28 @@
 @keyframes lurro-orbit { to { transform:rotate(360deg); } }
 @keyframes lurro-breathe { 50% { transform:translateY(-4px); opacity:.65; } }
 @media (prefers-reduced-motion:reduce) { .logo-loader-orbit img,.logo-loader-orbit span { animation:none; } }
+
+/* Project picker shares the existing sidebar surface and brand assets. */
+.project-switcher { position:relative; margin:24px 0 26px; }
+.project-switcher-trigger.dash-workspace { width:100%; margin:0; border:0; text-align:left; color:var(--ink); cursor:pointer; font-family:var(--body); }
+.project-switcher-trigger:hover,.project-switcher-trigger[aria-expanded="true"] { background:#eee8fa; }
+.project-switcher-trigger:disabled { cursor:wait; opacity:.65; }
+.project-switcher-label { display:grid; gap:5px; min-width:0; }
+.project-switcher-label > span { font-size:10px; color:var(--muted); }
+.project-switcher-label strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.project-switcher-popover { position:absolute; top:calc(100% + 8px); left:0; width:100%; z-index:50; padding:8px; border-radius:12px; background:#fff; box-shadow:0 8px 32px #291a3f1f; max-height:min(560px,calc(100dvh - 190px)); overflow-y:auto; }
+.project-switcher-caption { display:block; padding:8px; color:var(--muted); font-size:9px; letter-spacing:.1em; }
+.project-switcher-list { list-style:none; padding:0; margin:0; max-height:240px; overflow-y:auto; }
+.project-switcher-list a,.project-switcher-actions > a,.project-switcher-actions > button { width:100%; display:flex; align-items:center; gap:8px; padding:10px 8px; border:0; border-radius:7px; background:transparent; color:var(--ink); text-align:left; font:400 11px var(--body); cursor:pointer; }
+.project-switcher-list a:hover,.project-switcher-actions > a:hover,.project-switcher-actions > button:hover { background:#f7f4fb; }
+.project-switcher-list a.project-switcher-active { background:#eee8fa; color:#6048bf; }
+.project-switcher-list a > span { display:grid; gap:4px; min-width:0; flex:1; }
+.project-switcher-list strong { font-size:11px; font-weight:550; }
+.project-switcher-list small { color:var(--muted); font-size:9px; }
+.project-switcher svg { flex-shrink:0; width:16px; height:16px; }
+.project-switcher-actions { margin-top:8px; padding-top:4px; }
+.project-switcher-empty { margin:0; padding:8px; color:var(--muted); font-size:11px; line-height:1.7; }
+.project-switcher-form { display:grid; gap:12px; padding:12px 8px 8px; }
+.project-switcher-form .dash-button { width:100%; justify-content:center; }
+.project-switcher-form .dash-field-error { margin:0; font-size:10px; line-height:1.6; }
+.project-switcher :focus-visible { outline:2px solid #7052d8; outline-offset:2px; }
