@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ElementType } from "react";
+import { useEffect, useRef, useState, type ElementType, type PointerEvent as ReactPointerEvent, type MouseEvent as ReactMouseEvent } from "react";
 import Link from "next/link";
 import { HiOutlineArrowRight, HiOutlineArrowUpRight, HiOutlineChevronDown, HiOutlineDocumentText, HiOutlineWallet, HiOutlineReceiptPercent, HiOutlineFlag, HiOutlineShieldCheck, HiOutlineMagnifyingGlass, HiOutlineCodeBracket, HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 import { SpecularLink } from "./specular-link";
@@ -33,7 +33,25 @@ export function Navigation() {
   const root = useRef<HTMLDivElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
   const productTrigger = useRef<HTMLButtonElement>(null), resourcesTrigger = useRef<HTMLButtonElement>(null);
-  function close() { setMobileOpen(false); setPanel(null); }
+  const hoverClose = useRef<ReturnType<typeof setTimeout> | null>(null);
+  function cancelHoverClose() { if (hoverClose.current !== null) { clearTimeout(hoverClose.current); hoverClose.current = null; } }
+  function desktopHover() { return window.matchMedia("(min-width: 761px) and (hover: hover) and (pointer: fine)").matches; }
+  function enterPanel(name: "product" | "resources", event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== "mouse" || !desktopHover()) return;
+    cancelHoverClose(); setPanel(name);
+  }
+  function leavePanel(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== "mouse" || !desktopHover()) return;
+    if (event.currentTarget.querySelector(".landing-mega-menu")?.contains(document.activeElement)) return;
+    // Allow the pointer to cross the small space between trigger and dropdown.
+    cancelHoverClose(); hoverClose.current = setTimeout(() => { setPanel(null); hoverClose.current = null; }, 160);
+  }
+  function clickPanel(name: "product" | "resources", event: ReactMouseEvent<HTMLButtonElement>) {
+    cancelHoverClose();
+    setPanel(current => event.detail > 0 && desktopHover() ? name : current === name ? null : name);
+  }
+  function close() { cancelHoverClose(); setMobileOpen(false); setPanel(null); }
+  useEffect(() => () => { if (hoverClose.current !== null) clearTimeout(hoverClose.current); }, []);
   useEffect(() => {
     if (!mobileOpen && !panel) return;
     const outside = (event: PointerEvent) => { if (!root.current?.contains(event.target as Node)) { setMobileOpen(false); setPanel(null); } };
@@ -42,15 +60,15 @@ export function Navigation() {
   }, [mobileOpen, panel]);
   return <div className="landing-nav-region" ref={root} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) close(); }} onKeyDown={event => {
     if (event.key === "Escape") {
-      event.stopPropagation();
+      event.stopPropagation(); cancelHoverClose();
       if (panel) { (panel === "product" ? productTrigger : resourcesTrigger).current?.focus(); setPanel(null); }
       else { setMobileOpen(false); toggle.current?.focus(); }
     }
   }}>
     <button ref={toggle} type="button" className="menu-toggle" aria-label={mobileOpen ? "Close navigation" : "Open navigation"} aria-expanded={mobileOpen} aria-controls="primary-navigation" onClick={() => { setMobileOpen(!mobileOpen); setPanel(null); }}><span /><span className={mobileOpen ? "menu-open" : ""} /></button>
     <nav id="primary-navigation" aria-label="Primary" className={`navigation landing-navigation ${mobileOpen ? "navigation-open" : ""}`}>
-      <div className="landing-nav-group">
-        <button ref={productTrigger} type="button" aria-expanded={panel === "product"} aria-controls="landing-product-menu" onClick={() => setPanel(panel === "product" ? null : "product")}>Product<HiOutlineChevronDown aria-hidden="true" /></button>
+      <div className="landing-nav-group" onPointerEnter={event => enterPanel("product", event)} onPointerLeave={leavePanel}>
+        <button ref={productTrigger} type="button" aria-expanded={panel === "product"} aria-controls="landing-product-menu" onClick={event => clickPanel("product", event)}>Product<HiOutlineChevronDown aria-hidden="true" /></button>
         {panel === "product" && <div id="landing-product-menu" className="landing-mega-menu">
           <div className="landing-menu-heading"><span>THE LURRO WORKSPACE</span><Link href="/app/" onClick={close}>Open dashboard<HiOutlineArrowRight aria-hidden="true" /></Link></div>
           <div className="landing-feature-grid">{products.map(item => <FeatureLink key={item.title} {...item} onNavigate={close} />)}</div>
@@ -58,8 +76,8 @@ export function Navigation() {
           <div className="landing-menu-footer"><span>Arc Testnet · test USDC</span><Link href="/app/new/" onClick={close}>Create your first project<HiOutlineArrowRight aria-hidden="true" /></Link></div>
         </div>}
       </div>
-      <div className="landing-nav-group">
-        <button ref={resourcesTrigger} type="button" aria-expanded={panel === "resources"} aria-controls="landing-resources-menu" onClick={() => setPanel(panel === "resources" ? null : "resources")}>Resources<HiOutlineChevronDown aria-hidden="true" /></button>
+      <div className="landing-nav-group" onPointerEnter={event => enterPanel("resources", event)} onPointerLeave={leavePanel}>
+        <button ref={resourcesTrigger} type="button" aria-expanded={panel === "resources"} aria-controls="landing-resources-menu" onClick={event => clickPanel("resources", event)}>Resources<HiOutlineChevronDown aria-hidden="true" /></button>
         {panel === "resources" && <div id="landing-resources-menu" className="landing-mega-menu landing-resources-menu"><div className="landing-menu-heading"><span>EXPLORE LURRO</span></div><div className="landing-feature-grid">{resources.map(item => <FeatureLink key={item.title} {...item} onNavigate={close} />)}</div></div>}
       </div>
       <Link href="/#how-it-works" onClick={close}>How it works</Link>
