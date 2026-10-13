@@ -12,3 +12,9 @@ contracts/broadcast/
 contracts/lib/
 contracts/node_modules/
 contracts/.testnet/
+web/node_modules/
+web/.next/
+web/out/
+web/*.tsbuildinfo
+web/AGENTS.md
+web/next-env.d.ts
