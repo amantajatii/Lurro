@@ -59,10 +59,12 @@ test('live Arc proof vault satisfies accounting and exposes terminal statuses', 
 test('public reads fall back to documented dRPC when the primary endpoint is blocked', async () => {
   const originalFetch = globalThis.fetch;
   const visited = [];
-  globalThis.fetch = async (input) => {
+  globalThis.fetch = async (input, init) => {
     const url = input.url || String(input); visited.push(url);
     if (url.includes('rpc.testnet.arc.io')) throw new Error('blocked by client');
-    return new Response(JSON.stringify({ jsonrpc: '2.0', id: 1, result: '0x4cef52' }), { headers: { 'Content-Type': 'application/json' } });
+    const body = JSON.parse(init?.body || await input.clone().text());
+    const reply = request => ({ jsonrpc: '2.0', id: request.id, result: '0x4cef52' });
+    return new Response(JSON.stringify(Array.isArray(body) ? body.map(reply) : reply(body)), { headers: { 'Content-Type': 'application/json' } });
   };
   try {
     assert.equal(await arc.arcClient.getChainId(), 5042002);
