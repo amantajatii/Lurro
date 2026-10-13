@@ -1,6 +1,8 @@
-/* Landing shows core app components, without duplicating the full app shell. */
+/* Shared grid cell reserves the tallest tab, without fixed heights or internal scroll. */
 .workspace-preview { --app-card-radius:12px; --app-surface-violet:#f0ebfa; max-width:960px; }
-.product-preview-panel { height:520px; display:flex; flex-direction:column; gap:18px; overflow:clip; padding:28px; text-align:left; background:#f7f6f9; border-radius:16px; box-shadow:0 0 0 6px #e9e7eb; }
+.product-preview-stage { display:grid; }
+.product-preview-panel[aria-hidden="true"] { visibility:hidden; pointer-events:none; }
+.product-preview-panel { grid-area:1 / 1; min-width:0; display:flex; flex-direction:column; gap:18px; padding:28px; text-align:left; background:#f7f6f9; border-radius:16px; box-shadow:0 0 0 6px #e9e7eb; }
 .product-preview-panel > * { flex-shrink:0; }
 .product-preview-heading > div { display:flex; align-items:center; gap:10px; }
 .product-preview-heading .preview-tab-icon { width:28px; height:28px; border-radius:7px; }
@@ -24,7 +26,7 @@
 .workspace-preview .dash-text-button svg { width:15px; height:15px; }
 .workspace-preview .dash-text-button:hover { color:var(--violet-hover); }
 @media(max-width:600px) {
-  .product-preview-panel { height:600px; padding:18px 14px; gap:14px; }
+  .product-preview-panel { padding:18px 14px; gap:14px; }
   .product-preview-heading h2 { font-size:18px; }
   .product-preview-heading > p { font-size:11px; }
   .product-preview-metrics { gap:6px; }
