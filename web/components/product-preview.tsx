@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import { HiOutlineUserGroup, HiOutlineWallet, HiOutlineDocumentCheck, HiOutlineDocumentText, HiOutlineChartBar, HiOutlineFolder, HiOutlineSquares2X2, HiOutlineShieldCheck } from "react-icons/hi2";
+import { HiOutlineUserGroup, HiOutlineWallet, HiOutlineDocumentCheck, HiOutlineArrowRight } from "react-icons/hi2";
+import { AppCard } from "./ui/card";
+import { ButtonLink } from "./ui/button";
+import "../app/app/components.css";
+import "./product-preview.css";
 
 const views = [
-  { title: "Payment rights", icon: HiOutlineUserGroup, heading: "Agreement overview", description: "One shared agreement. Clear rights for everyone.", columns: ["Recipient", "Allocation", "Destination"], rows: [["Recipient A", "Fixed in agreement", "Agreed wallet"], ["Recipient B", "Fixed in agreement", "Agreed wallet"]] },
-  { title: "Milestone funding", icon: HiOutlineWallet, heading: "Funding lifecycle", description: "Keep obligations, deposits, and earned payments distinct.", columns: ["Stage", "What it means", "Source"], rows: [["Committed", "Agreed obligation", "Agreement"], ["Reserved", "Full milestone allocation", "Vault accounting"], ["Paid", "Successful settlement", "Transaction receipt"]] },
-  { title: "Verifiable receipts", icon: HiOutlineDocumentCheck, heading: "Payment paper trail", description: "Follow the agreement all the way to its receipt.", columns: ["Reference", "Purpose", "Proof"], rows: [["Agreement", "Recipients & rules", "Vault contract"], ["Evidence", "Submitted deliverable", "Referenced hash"], ["Settlement", "Authorized transfer", "On-chain receipt"]] },
+  { title: "Payment rights", page: "Agreement", route: "/app/agreement/", icon: HiOutlineUserGroup, description: "One shared agreement. Clear rights for everyone.", columns: ["Recipient", "Payment rights", "Destination"], rows: [["Recipient A", "Fixed in agreement", "Agreed wallet"], ["Recipient B", "Fixed in agreement", "Agreed wallet"]], metrics: [["Recipients", "Named wallets"], ["Allocations", "Fixed at creation"], ["Acceptance", "All required parties"]], cardTitle: "Recipients & allocations" },
+  { title: "Milestone funding", page: "Funding", route: "/app/funding/", icon: HiOutlineWallet, description: "Deposit USDC, reserve milestones, and track the funds held in your vault.", columns: ["Stage", "What it means", "Source"], rows: [["Committed", "Agreed obligation", "Agreement"], ["Reserved", "Full milestone allocation", "Vault accounting"], ["Paid", "Successful settlement", "Transaction receipt"]], metrics: [["Available", "— USDC"], ["Reserved", "— USDC"], ["Funding capacity", "— USDC"]], cardTitle: "Funding lifecycle" },
+  { title: "Verifiable receipts", page: "Audit Explorer", route: "/app/audit/", icon: HiOutlineDocumentCheck, description: "Trace the agreement, evidence, and settlement through original vault events.", columns: ["Reference", "Purpose", "Proof"], rows: [["Agreement", "Recipients & rules", "Vault contract"], ["Evidence", "Submitted deliverable", "Referenced hash"], ["Settlement", "Authorized transfer", "On-chain receipt"]], metrics: [["Data source", "Vault events"], ["Coverage", "Selected range"], ["Receipts", "Explorer links"]], cardTitle: "Project paper trail" },
 ];
-
 export function ProductPreview() {
   const [active, setActive] = useState(0);
   const view = views[active];
@@ -18,11 +20,12 @@ export function ProductPreview() {
     <div className="preview-switcher" aria-label="Product preview">
       {views.map((item, index) => <button key={item.title} type="button" aria-pressed={active === index} onClick={() => setActive(index)}><span className={`preview-tab-icon preview-tab-icon-${index}`} aria-hidden="true"><item.icon /></span>{item.title}</button>)}
     </div>
-    <div className="preview-shell">
-      <div className="preview-app">
-        <aside className="preview-rail" aria-hidden="true"><Image src="/lurro-mark.webp" width={24} height={24} alt="" unoptimized /><span><HiOutlineChartBar /></span><span><HiOutlineFolder /></span><span className="rail-active"><HiOutlineSquares2X2 /></span></aside>
-        <div className="preview-sidebar"><strong>Project workspace</strong><span className="preview-sidebar-label">AGREEMENT</span>{views.map((item, index) => <button key={item.title} type="button" aria-pressed={active === index} onClick={() => setActive(index)} className={active === index ? "preview-nav-active" : ""}><span aria-hidden="true"><item.icon /></span>{item.title}</button>)}<div className="preview-sidebar-note">Rules stay with<br />the funds.</div></div>
-        <div className="preview-main" aria-live="polite"><div className="preview-title"><h2>{view.heading}</h2><span>Illustrative preview</span></div><p>{view.description}</p><div className="preview-context"><span aria-hidden="true"><HiOutlineDocumentText /></span> Project agreement <span>USDC · Arc</span></div><div className="preview-table-wrap"><table><thead><tr>{view.columns.map(column => <th key={column}>{column}</th>)}</tr></thead><tbody>{view.rows.map(row => <tr key={row[0]}>{row.map((cell, index) => <td key={cell}>{index === 0 && <span className="preview-row-dot" aria-hidden="true" />}{cell}</td>)}</tr>)}</tbody></table></div><div className="preview-summary"><span aria-hidden="true"><HiOutlineShieldCheck /></span><div><strong>Built around the agreement.</strong><p>Named recipients. Defined milestones. Traceable settlement.</p></div></div></div>
+    <div className="preview-shell workspace-preview">
+      <div className="product-preview-panel" aria-live="polite">
+        <div className="product-preview-heading"><div><span className={`preview-tab-icon preview-tab-icon-${active}`} aria-hidden="true"><view.icon /></span><h2>{view.page}</h2></div><p>{view.description}</p></div>
+        <div className="product-preview-metrics">{view.metrics.map(([label, value]) => <AppCard key={label} as="div"><span>{label}</span><strong>{value}</strong></AppCard>)}</div>
+        <AppCard className="product-preview-table-card"><h3>{view.cardTitle}</h3><div className="product-preview-table-wrap"><table><thead><tr>{view.columns.map(column => <th key={column}>{column}</th>)}</tr></thead><tbody>{view.rows.map(row => <tr key={row[0]}>{row.map((cell, index) => <td key={`${index}:${cell}`}>{index === 0 && <span className="product-preview-dot" aria-hidden="true" />}{cell}</td>)}</tr>)}</tbody></table></div></AppCard>
+        <div className="product-preview-footer"><span>Illustrative preview · USDC on Arc</span><ButtonLink href={view.route} variant="text">Open {view.page}<HiOutlineArrowRight aria-hidden="true" /></ButtonLink></div>
       </div>
     </div>
     <p className="preview-disclaimer">Illustrative interface · no live project balances or transactions</p>
