@@ -9,6 +9,6 @@ export function createLurroWalletConfig(projectId?: string) {
   // SSR hydration needs the persistence middleware, so use no-op storage instead of storage:null.
   const storage = createStorage({ key:"lurro.wallet", storage:{ getItem:()=>null,setItem:()=>{},removeItem:()=>{} } });
   return createConfig({ chains:network.mainnet ? [network.chain,arcTestnet] : [arcTestnet,arc], connectors, ssr:true, storage, transports:{ [arcTestnet.id]:fallback([
-    http("https://rpc.testnet.arc.io",{ retryCount:1 }),http("https://arc-testnet.drpc.org",{ retryCount:1 }),
-  ]), [arc.id]:fallback([http("https://rpc.mainnet.arc.io",{ retryCount:1 }),http("https://rpc.blockdaemon.mainnet.arc.io",{ retryCount:1 })]) } });
+    ...(network.mainnet ? ["https://rpc.testnet.arc.io", "https://arc-testnet.drpc.org"] : network.rpcUrls).map(url => http(url, { retryCount:1 })),
+  ]), [arc.id]:fallback((network.mainnet ? network.rpcUrls : ["https://rpc.mainnet.arc.io", "https://rpc.blockdaemon.mainnet.arc.io"]).map(url => http(url, { retryCount:1 }))) } });
 }

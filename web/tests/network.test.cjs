@@ -74,3 +74,14 @@ test('Mainnet public proof exposes deployment evidence without relabelling Testn
   assert.ok(!JSON.stringify(proof).includes('Testnet'));
   assert.ok(build({ NEXT_PUBLIC_LURRO_NETWORK:'testnet' })('public-proof').publicProof.vault.includes('explorer.testnet.arc.io'));
 });
+
+test('custom RPC is scoped to the selected network and does not enable writes', () => {
+  const load=build({NEXT_PUBLIC_LURRO_NETWORK:'mainnet',NEXT_PUBLIC_LURRO_RPC_URL:'http://127.0.0.1:3052/rpc'});
+  assert.equal(load('network').network.rpcUrls[0],'http://127.0.0.1:3052/rpc');
+  assert.equal(load('network').network.chain.id,5042);
+  assert.equal(load('network').writesEnabled,false);
+  const config=load('wallet-config').createLurroWalletConfig();
+  assert.equal(config.getClient({chainId:5042}).transport.transports[0].value.url,'http://127.0.0.1:3052/rpc');
+  for(const url of ['http://example.com/rpc','https://user:password@example.com/rpc','file:///tmp/rpc'])
+    assert.throws(()=>load('network').networkSettings('mainnet',url));
+});

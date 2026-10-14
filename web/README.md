@@ -147,3 +147,7 @@ not contract authorization. Every Mainnet action still requires an explicit
 acknowledgement of real USDC, immutable recipients and the unaudited prototype,
 plus live role/network/state checks and wallet confirmation. The deployment
 script is documented in `contracts/README.md`; enabling a frontend flag does not deploy a vault or certify its financial safety. The existing Mainnet deployment does not automatically authorize further transactions.
+
+### Optional selected-network RPC
+
+`NEXT_PUBLIC_LURRO_RPC_URL` prepends a public HTTPS endpoint (or loopback HTTP endpoint for local development) to the selected network RPCs. URL credentials are rejected; never put a secret in this public setting. Reads and wallet transports use the same selected-chain endpoints, and live vault reads still verify chain ID and deployed vault schema. The setting does not switch networks, enable Mainnet writes, or authorize a transaction. A local read-only forwarding server can be used when browser content blockers prevent direct RPC access; responses must come from the real selected chain, not fixtures.
