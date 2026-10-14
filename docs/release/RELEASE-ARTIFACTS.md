@@ -1,5 +1,15 @@
 # Release artifact provenance and reproducibility
 
+## Mainnet deployment and subsequent frontend change
+
+The frozen contract artifact below was subsequently deployed on chain **5042** at `0x7c9dfbe425c170e49da68459a72e4f7e9f58dd85`. Its deployed runtime hash is `0x6c4da87183cc2c805c13c2610008c349f085bb9d5289b3b31c1f4cd193668c66`; immutable-normalized runtime matched the frozen artifact. [Deployment provenance and exact-match verification](MAINNET-DEPLOYMENT.md) record the actual transaction and source identity.
+
+Frontend commit `5cd7220` changes network-aware copy, public proof links and the production default network. It does **not** change Solidity source, ABI, creation bytecode or P0 financial rules. Reproduce the historical contract candidate below when checking the frozen artifact; use the current frontend commit when reproducing the Mainnet UI.
+
+GitHub `main` was checked with `git ls-remote` on 15 October 2026 and points to `e5befe25b0704b119cf989a8a5b2490f803c58f0`, which contains the Mainnet deployment report. Frontend commit `5cd7220` and this documentation refresh have not been pushed by the agent. The publication failure described later is historical.
+
+## Historical artifact verification — 14 October 2026
+
 Verified 2026-10-14T13:17:44.507808+00:00. Implementation/test candidate: **`dc0b1153bdf3902405a65fa43baab0ce0354d422`**. Starting HEAD was `af130ddace5c845217e84fca01b6d45e4570c882`, not the supplied `bcac11d2c5f4b3b82780f27537817c7a15cf66fa`. Starting HEAD differed only by the historical preparation report. The new candidate adds two invariant-handler path tests; contract and frontend sources are unchanged from `bcac11d`. A later documentation-only commit may package these reports; it is not a different executable artifact.
 
 ## Frozen identities

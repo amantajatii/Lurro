@@ -1,4 +1,12 @@
-# Final pre-Mainnet release verification
+# Release verification and Mainnet deployment status
+
+## Current status — 15 October 2026
+
+A limited vault is **deployed on Arc Mainnet**, with successful creation and exact source verification on Sourcify. See [MAINNET-DEPLOYMENT.md](MAINNET-DEPLOYMENT.md) for the actual receipt and constructor/artifact provenance. Mainnet funding/settlement is not established by the recorded deployment checkpoint, and no independent audit is claimed. Frontend commit `5cd7220` updates network-aware copy and proof links; production defaults to Mainnet and writes remain disabled by default.
+
+The NO-GO matrix and pending-input statements below are **historical pre-deployment checkpoints**. Later owner-approved inputs, desktop checks and deployment are recorded in the follow-ups; they must not be read as an assertion that deployment is still pending. Further financial actions require their own authorization.
+
+## Historical verification checkpoint
 
 Candidate **`dc0b1153bdf3902405a65fa43baab0ce0354d422`**, verified 14 October 2026. **NO-GO for Mainnet broadcast at this checkpoint.** This is a technical readiness recommendation, not a decision signed on the owner's behalf. No Mainnet transaction was broadcast. No real USDC, owner key or independent audit was used or claimed.
 
@@ -161,6 +169,6 @@ The owner subsequently reported that disconnect succeeds and wrong-network conne
 
 ## Subsequent explicitly authorized deployment
 
-The owner later explicitly requested Mainnet deployment only. That new instruction superseded the original no-broadcast constraint for deployment alone. A successful unfunded/unlocked vault was deployed at 0x7c9dfbe425c170e49da68459a72e4f7e9f58dd85, block 25,950,620, cost ~0.065047 USDC. Runtime, terms and zero accounting were verified independently. No other Mainnet action occurred, and no frontend write flag was enabled. See [MAINNET-DEPLOYMENT.md](MAINNET-DEPLOYMENT.md) for receipt/provenance and pending explorer verification. Historical NO-GO/read-only entries above describe their earlier checkpoints, not this later user-authorized transaction.
+The owner later explicitly requested Mainnet deployment only. That new instruction superseded the original no-broadcast constraint for deployment alone. A successful unfunded/unlocked vault was deployed at 0x7c9dfbe425c170e49da68459a72e4f7e9f58dd85, block 25,950,620, cost ~0.065047 USDC. Runtime, terms and zero accounting were verified independently. No other Mainnet action occurred, and no frontend write flag was enabled. See [MAINNET-DEPLOYMENT.md](MAINNET-DEPLOYMENT.md) for receipt/provenance and successful Sourcify exact-match verification; the Arc Blockscout verification badge was not confirmed in that report. Historical NO-GO/read-only entries above describe their earlier checkpoints, not this later user-authorized transaction.
 
 Source verification subsequently completed on Sourcify: creation/runtime exact_match, chain 5042, verified 14 October 2026 16:33:13 UTC. Arc Blockscout API remains Cloudflare-blocked; its badge is not claimed.

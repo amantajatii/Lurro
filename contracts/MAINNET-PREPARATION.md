@@ -1,5 +1,7 @@
 # Mainnet preparation — implementation and verification
 
+**Historical preparation checkpoint.** A later owner-authorized Mainnet deployment succeeded; see [MAINNET-DEPLOYMENT.md](../docs/release/MAINNET-DEPLOYMENT.md). The no-broadcast restriction and outstanding gates below describe the earlier 14 October preparation run. Current production/frontend configuration is documented in [web/README.md](../web/README.md).
+
 Checked 14 October 2026, 12:05 UTC. **NOT CLEARED for Mainnet broadcast.**
 This is an internal implementation report, not an independent audit.
 

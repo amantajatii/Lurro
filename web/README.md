@@ -17,7 +17,7 @@ Four primary CTAs (including the header) use an original lightweight interpretat
 
 The landing page is marketing. All diagrams are explicitly illustrative, have no fictional financial totals or transaction status, and cannot trigger payments. Proof links follow the build network: Mainnet deployment/source evidence, or Testnet historical payout/refund. Testnet proof is an automated self-test, not an independent human verification or security audit.
 
-Mainnet deployment is outside this frontend. Navigation anchors, mobile menu, three product-preview buttons and native FAQ accordions work without a private API or signup service. The hero uses a white grid, compact typography and responsive SVG curves above and below the product preview, following the supplied Dub screenshot as a visual reference.
+The frontend supports a Mainnet-configured workspace; the existing limited vault deployment and its verification are recorded in [MAINNET-DEPLOYMENT.md](../docs/release/MAINNET-DEPLOYMENT.md). Mainnet writes are disabled by default. Navigation anchors, mobile menu, three product-preview buttons and native FAQ accordions work without a private API or signup service. The hero uses a white grid, compact typography and responsive SVG curves above and below the product preview, following the supplied Dub screenshot as a visual reference.
 
 ## Dashboard `/app/`
 
@@ -27,7 +27,7 @@ Wallet connection uses [RainbowKit](https://rainbowkit.com/docs/custom-wallet-li
 
 Projects are linked by vault address because the current contract has no project registry. Up to 12 addresses can be saved in this browser; no financial totals or wallet credentials are stored. Public reads work without a wallet. Every refresh discards old balances and reads the generated v1.2 ABI at a pinned block on the selected Arc network; any failed read withholds aggregate totals. Reported schema/network/token/P0 limits and the accounting identity are checked. An arbitrary vault reporting this schema is not thereby source-verified or independently audited.
 
-Use **Read the Testnet vault** to fetch the documented integration self-test from Arc. Its title is a label for that public test vault; amounts and milestone states come from RPC, not the proof document or fixtures. This is test USDC, not a real-client project. Create Project opens `/app/new/`. Project Overview opens `/app/project/?project=0x…`. Agreement opens `/app/agreement/?project=0x…`. Funding, Milestones, Payments, Governance and Audit Explorer are available at their respective `/app/` routes, with the same `?project=0x…` parameter.
+On Mainnet, link a project by its Mainnet vault address or open the public deployment from the landing proof section. Amounts and milestone states come from the selected chain RPC, not proof documents or fixtures. The **Read the Testnet vault** shortcut appears only in a Testnet build; it reads the historical automated self-test using test USDC. Create Project opens `/app/new/`. Project Overview opens `/app/project/?project=0x…`. Agreement opens `/app/agreement/?project=0x…`. Funding, Milestones, Payments, Governance and Audit Explorer are available at their respective `/app/` routes, with the same `?project=0x…` parameter.
 
 Run `npm test` for exact amount formatting, role/action derivation, invalid addresses, and RPC failure handling. `LIVE_ARC_TEST=1 npm test` additionally reads the actual Testnet proof vault and checks its accounting and terminal milestone statuses. Test fixtures stay in `tests/` and are never used by the UI. Arc configuration follows [Connect to Arc](https://docs.arc.io/arc/references/connect-to-arc).
 
@@ -88,7 +88,7 @@ Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_WALLETCONNECT_PROJECT_I
 
 ## Funding, Milestones, Payments and Governance
 
-`WorkflowFrame`, `Metrics`, `MilestoneHeading`, `Deadline`, `ActionButton`, `HashFile` and `ActionPanel` reuse the workspace shell and UI primitives. Regenerate `workflow-abi.ts` after `forge build` with `node web/scripts/generate-workflow.cjs`. `readWorkflow` reads state, revision/hash bindings, token balance/allowance, cancellation version and approvals at the same vault snapshot block. Current public reads use batches of at most five requests; history queries use sequential unbatched requests to respect provider limits. History also falls back to the [Blockdaemon Arc Testnet host](https://www.blockdaemon.com/blog/blockdaemon-expands-arc-testnet-support-with-websockets), whose HTTPS JSON-RPC, chain ID, original 36-event window and CORS were verified locally. The explorer indexer remains the final history fallback.
+`WorkflowFrame`, `Metrics`, `MilestoneHeading`, `Deadline`, `ActionButton`, `HashFile` and `ActionPanel` reuse the workspace shell and UI primitives. Regenerate `workflow-abi.ts` after `forge build` with `node web/scripts/generate-workflow.cjs`. `readWorkflow` reads state, revision/hash bindings, token balance/allowance, cancellation version and approvals at the same vault snapshot block. Current public reads use batches of at most five requests; history queries use sequential unbatched requests to respect provider limits. For Testnet builds, history also falls back to the [Blockdaemon Arc Testnet host](https://www.blockdaemon.com/blog/blockdaemon-expands-arc-testnet-support-with-websockets), whose HTTPS JSON-RPC, chain ID, original 36-event window and CORS were verified locally. The explorer indexer remains the final history fallback.
 
 Funding separates ERC-20 approval of the exact selected amount from deposit, checks capacity and funder balance, and reserves complete milestone allocations in order. Arc exposes one underlying USDC balance through native and ERC-20 interfaces; gas consumes that same balance, so the UI reminds funders to leave room for fees. See [Arc wallet balance guidance](https://www.arc.io/blog/supporting-arc-in-wallets-one-balance-usdc-fees-and-complete-history). Milestones hashes exact evidence bytes locally, supports up to the contracted revision limit, checks the verifier's selected file against the current commitment, and binds review transactions to its exact revision/hash. File bodies and rejection reason text stay local and must be shared separately with the assigned parties.
 
@@ -125,7 +125,7 @@ Same-vault refresh retains the last displayed snapshot with an Updating indicato
 Project names in the switcher, dashboard search and overview come from locally verified agreement metadata. Creation saves the name only after the successful vault receipt and document-hash check; uploading the original matching agreement can populate names for existing vaults. A separate address/document-hash-bound local name cache preserves the existing address-only bookmark format. Unknown names fall back to a short vault address, and names are not inferred from RPC or treated as financial authority.
 
 
-## Network-bound builds and experimental Mainnet preparation
+## Network-bound builds and Mainnet workspace
 
 Production builds default to Mainnet; development defaults to Testnet. Set `NEXT_PUBLIC_LURRO_NETWORK=mainnet` or `testnet` **before building** to select explicitly. The example configuration now selects Mainnet.
 Invalid values fail closed. Next.js embeds these public values in the static
@@ -146,5 +146,4 @@ signer and strictly capped budget may a deployment be rebuilt with
 not contract authorization. Every Mainnet action still requires an explicit
 acknowledgement of real USDC, immutable recipients and the unaudited prototype,
 plus live role/network/state checks and wallet confirmation. The deployment
-script is documented in `contracts/README.md`; this preparation does not deploy
-or certify Mainnet operation.
+script is documented in `contracts/README.md`; enabling a frontend flag does not deploy a vault or certify its financial safety. The existing Mainnet deployment does not automatically authorize further transactions.

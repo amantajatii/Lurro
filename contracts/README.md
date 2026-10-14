@@ -1,6 +1,6 @@
 # Lurro ProjectVault — P0 v1.2
 
-Unaudited Solidity prototype. Local tests are not an independent security review. A separately executed Arc Testnet integration self-test has a deployed, source-verified vault and successful test-USDC payout/refund receipts; see [TESTNET-PROOF.md](TESTNET-PROOF.md). No Mainnet operation or independent human verification is claimed. Dub code/assets are not used.
+Unaudited Solidity prototype with a limited proof-of-concept vault deployed on **Arc Mainnet (5042)**. The successful creation receipt, exact source match on Sourcify, constructor inputs and artifact hashes are recorded in [MAINNET-DEPLOYMENT.md](../docs/release/MAINNET-DEPLOYMENT.md). That report records an unfunded/unlocked deployment checkpoint; it does not claim a completed Mainnet payment lifecycle or an independent audit. Historical test-USDC payout/refund evidence remains in [TESTNET-PROOF.md](TESTNET-PROOF.md) and the [fresh release rehearsal](../docs/release/TESTNET-REHEARSAL.md). Dub code/assets are not used.
 
 ## Reproduce
 
@@ -82,7 +82,7 @@ TestUSDC exists only in tests and is etched at the fixed USDC address on a local
 
 ## Testnet deployment preparation
 
-The deployment script is deliberately Testnet-only. Prepare actual, reviewed terms and encode with viem `encodeAbiParameters` using the exact constructor tuple from the compiled ABI. Write the resulting `0x...` string without whitespace to `out/project-terms.hex`. Do not use the test fixture/vector as a real project agreement. Use a keystore or hardware wallet belonging to `terms.funder`; never put a private key in source or shell arguments.
+`script/Deploy.s.sol` is deliberately Testnet-only; the separate Mainnet entrypoint is described below. Prepare actual, reviewed terms and encode with viem `encodeAbiParameters` using the exact constructor tuple from the compiled ABI. Write the resulting `0x...` string without whitespace to `out/project-terms.hex`. Do not use the test fixture/vector as a real project agreement. Use a keystore or hardware wallet belonging to `terms.funder`; never put a private key in source or shell arguments.
 
 Simulation only (no `--broadcast`):
 
@@ -103,7 +103,9 @@ Arc references: [connection details](https://docs.arc.io/arc/references/connect-
 - Public addresses/amounts reveal relationships. No document custody, KYC, cron automation, insurance or fiat integration.
 - Before meaningful Mainnet funding: independent security review, static analysis, actual Arc integration and jurisdictional/participant clearance.
 
-## Mainnet deployment preparation
+## Mainnet deployment and future deployment preparation
+
+The existing limited deployment is documented in [MAINNET-DEPLOYMENT.md](../docs/release/MAINNET-DEPLOYMENT.md). These instructions concern a future deployment; they are not a request to redeploy the existing vault.
 
 `script/DeployMainnet.s.sol:DeployMainnetProjectVault` is a separate Mainnet-only
 entrypoint (chain 5042). The Testnet script remains guarded to 5042002.

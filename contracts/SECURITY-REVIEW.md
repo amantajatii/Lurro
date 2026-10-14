@@ -1,5 +1,7 @@
 # Lurro P0 v1.2 — internal technical security review
 
+**Review scope is historical.** A later limited Mainnet vault deployment and exact source verification are documented in [MAINNET-DEPLOYMENT.md](../docs/release/MAINNET-DEPLOYMENT.md). They do not change the audit status or constitute a new security review. Statements below about actions not performed apply to the dated review scope.
+
 Date: 12 October 2026. Scope: `src/ProjectVault.sol`, its token/library dependencies, deployment script, agreement encoding, unit/fuzz/invariant tests and cancellation/funding callers. Review assumes exactly one funder, 2–5 recipients and 1–3 milestones, the immutable Arc USDC interface, and the signed v1.2 arbitration/recovery policy.
 
 This is an internal review by the implementation agent plus automated analysis, **not an independent third-party audit, formal verification or Mainnet approval**.
