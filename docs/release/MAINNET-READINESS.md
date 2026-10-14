@@ -2,6 +2,8 @@
 
 ## Current status — 15 October 2026
 
+A later owner-authorized [Mainnet demonstration](MAINNET-DEMO-PROOF.md) completed a 1 USDC payout via the unchanged primary arbitration path in a new vault. All five role wallets were owner-operated. The successful settlement, before/after recipient balances and full receipts are recorded separately; this does not establish an independent audit or ordinary 48-hour unchallenged finalization.
+
 A limited vault is **deployed on Arc Mainnet**, with successful creation and exact source verification on Sourcify. See [MAINNET-DEPLOYMENT.md](MAINNET-DEPLOYMENT.md) for the actual receipt and constructor/artifact provenance. Mainnet funding/settlement is not established by the recorded deployment checkpoint, and no independent audit is claimed. Frontend commit `5cd7220` updates network-aware copy and proof links; production defaults to Mainnet and writes remain disabled by default.
 
 The NO-GO matrix and pending-input statements below are **historical pre-deployment checkpoints**. Later owner-approved inputs, desktop checks and deployment are recorded in the follow-ups; they must not be read as an assertion that deployment is still pending. Further financial actions require their own authorization.

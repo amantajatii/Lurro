@@ -65,12 +65,12 @@ test('production defaults to Mainnet while explicit Testnet builds remain Testne
   assert.equal(prod.writesEnabled,false);
   assert.equal(build({ NODE_ENV:'production',NEXT_PUBLIC_LURRO_NETWORK:'testnet' })('network').network.chain.id,5042002);
 });
-test('Mainnet public proof exposes deployment evidence without relabelling Testnet payments', () => {
+test('Mainnet public proof exposes its actual owner-operated payout without relabelling Testnet payments', () => {
   const proof=main()('public-proof').publicProof;
   assert.ok(proof.vault.startsWith('https://explorer.arc.io/address/'));
-  assert.ok(proof.cards.some(card=>card.title==='Successful deployment'));
+  assert.ok(proof.cards.some(card=>card.title==='Successful payout' && card.href.includes('0x4f401afcea8f7f2cb4eec40cb0e31d0c0125385c50521b4a0ab08e1a1ba6a72d')));
   assert.ok(proof.cards.some(card=>card.href.includes('sourcify.dev')));
-  assert.ok(proof.cards.every(card=>!card.href.includes('testnet') && !card.title.includes('payout')));
+  assert.ok(proof.cards.every(card=>!card.href.includes('testnet')));
   assert.ok(!JSON.stringify(proof).includes('Testnet'));
   assert.ok(build({ NEXT_PUBLIC_LURRO_NETWORK:'testnet' })('public-proof').publicProof.vault.includes('explorer.testnet.arc.io'));
 });

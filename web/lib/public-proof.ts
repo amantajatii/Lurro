@@ -1,19 +1,19 @@
 import { network } from "./network";
 
-// Deployment evidence is distinct from payment evidence: no Mainnet payout is claimed.
-export const mainnetVault = "0x7c9dfbe425c170e49da68459a72e4f7e9f58dd85";
+// Mainnet payment proof is the owner-operated live demonstration; Testnet history stays separate.
+export const mainnetVault = "0xE3f07fdFa237B159608Fa251CB5E16A3C4351A2b";
 export const publicProof = network.mainnet ? {
   vault: `https://explorer.arc.io/address/${mainnetVault}`,
-  title: "Mainnet deployment",
-  description: "Inspect the deployed contract and creation receipt.",
-  summary: "Lurro is deployed on Arc Mainnet. Inspect the successful contract creation, verified source, and immutable agreement directly. Deployment evidence is separate from funding and settlement receipts.",
-  disclosure: "Mainnet deployment · USDC · unaudited prototype",
+  title: "Mainnet payment proof",
+  description: "Inspect the vault, accepted agreement, and successful USDC payout.",
+  summary: "Our owner-operated Arc Mainnet demonstration completed agreement acceptance, funding, evidence review, challenge/arbitration, and a 1 USDC payout to the immutable recipient. Inspect the source and settlement receipts.",
+  disclosure: "Owner-operated Mainnet demo · real USDC · unaudited prototype",
   cta: "Inspect the Mainnet vault",
   report: `/app/agreement/?project=${mainnetVault}`,
   reportLabel: "Review the Mainnet agreement",
   cards: [
-    { title: "Verified source", detail: "Exact creation and runtime match on Sourcify", href: "https://sourcify.dev/server/v2/verify/5611443c-44d3-41ca-ac91-ebd6bf0929c5", kind: "code" },
-    { title: "Successful deployment", detail: "Inspect the contract creation receipt on Arc Mainnet", href: "https://explorer.arc.io/tx/0xd2e7a10cf0ce913882d633534f9603373c72bf5b11341a218257907ea8bc54a9", kind: "route" },
+    { title: "Verified source", detail: "Exact creation and runtime match on Sourcify", href: "https://sourcify.dev/server/v2/verify/c94c027a-c98e-4192-be17-ba381b7a9793", kind: "code" },
+    { title: "Successful payout", detail: "Follow the 1 USDC transfer to the agreed recipient", href: "https://explorer.arc.io/tx/0x4f401afcea8f7f2cb4eec40cb0e31d0c0125385c50521b4a0ab08e1a1ba6a72d", kind: "route" },
     { title: "Project agreement", detail: "Read the immutable recipients, allocations, and rules", href: `/app/agreement/?project=${mainnetVault}`, kind: "fund" },
   ],
 } : {

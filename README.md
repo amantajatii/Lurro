@@ -4,9 +4,15 @@ Project funding on Arc: agree on payment rights, secure milestone funds in USDC,
 
 Lurro provides a Next.js workspace and an immutable Solidity `ProjectVault`. Each project defines 1–5 recipients, 1–3 milestones, a funder, a verifier, and primary/backup arbiters. Required parties accept the same agreement before funding begins. Payouts follow its review, challenge and arbitration rules and go to the original recipient addresses.
 
-## Mainnet deployment
+## Mainnet proof of concept
 
-A limited proof-of-concept vault was successfully deployed on **Arc Mainnet (chain 5042)** on 14 October 2026.
+An owner-operated demonstration on **Arc Mainnet (chain 5042)** completed agreement acceptance, funding, evidence review, approval challenge, primary arbitration, and a **1 USDC payout** to the immutable recipient. All five role wallets were controlled by the owner; this is not an independent user trial or audit.
+
+- [Completed demo vault](https://explorer.arc.io/address/0xE3f07fdFa237B159608Fa251CB5E16A3C4351A2b)
+- [Successful 1 USDC payout](https://explorer.arc.io/tx/0x4f401afcea8f7f2cb4eec40cb0e31d0c0125385c50521b4a0ab08e1a1ba6a72d)
+- [Full demo receipts, balances and artifact identity](docs/release/MAINNET-DEMO-PROOF.md)
+
+The earlier deployment-only checkpoint remains below for provenance. It is a separate vault.
 
 | Evidence | Link |
 | --- | --- |
