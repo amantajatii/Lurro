@@ -11,6 +11,7 @@ type Pending = AgreementTransaction;
 function message(error: unknown) { return error instanceof Error ? ("shortMessage" in error ? String(error.shortMessage) : error.message).split("\n")[0] : "The action was not completed. Check your wallet and retry."; }
 export function useAgreementTransaction(address: Address | undefined, refresh: () => void) {
   const wallet = useWallet();
+  const [completed, setCompleted] = useState<Pending>();
   const [transaction, setTransaction] = useState<Pending>();
   const [phase, setPhase] = useState<"idle" | "checking" | "wallet" | "pending" | "confirmed">("idle");
   const [error, setError] = useState("");
@@ -46,7 +47,7 @@ export function useAgreementTransaction(address: Address | undefined, refresh: (
       const current = await readAgreement(tx.address);
       if (current.vault.block < receipt.blockNumber) throw new Error("The RPC snapshot is behind the receipt. Check the receipt again shortly.");
       if (current.termsHash !== tx.termsHash || !acceptanceReceiptMatches(current, tx.account, tx.action)) throw new Error("The receipt succeeded, but the agreement state could not be verified. Check the receipt again.");
-      setPhase("confirmed"); refresh();
+      setCompleted({ ...tx, hash: receipt.transactionHash }); setTransaction(undefined); setPhase("confirmed"); refresh();
       try { sessionStorage.removeItem(storageKey); } catch { /* Optional storage. */ }
     } catch (e) { setError(message(e)); setPhase("idle"); }
     finally { sending.current = false; }
@@ -89,5 +90,5 @@ export function useAgreementTransaction(address: Address | undefined, refresh: (
     setTransaction(undefined); setError(""); setFailedReceipt(false); setPhase("idle"); refresh();
     try { sessionStorage.removeItem(storageKey); } catch { /* Optional storage. */ }
   }
-  return { transaction, phase, error, failedReceipt, busy: ["checking", "wallet", "pending"].includes(phase), send, checkReceipt, clearTracking };
+  return { transaction, completed, phase, error, failedReceipt, busy: ["checking", "wallet", "pending"].includes(phase), send, checkReceipt, clearTracking };
 }

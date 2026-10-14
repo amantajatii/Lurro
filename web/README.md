@@ -115,3 +115,9 @@ The shared bookmark module validates, normalizes and deduplicates up to twelve a
 ## Landing navigation
 
 The landing header follows Dub's navigation hierarchy as a visual reference, with original Lurro components: Product and Resources dropdowns, an Open app link, and a Create project CTA. Product opens the real Agreement/Funding/Payments pages plus Milestones/Governance/Audit, with dashboard and creation shortcuts. Resources opens the public proof in Audit, protocol source and FAQs. Hero and closing CTAs now lead to the workspace and project creation respectively. Mobile navigation retains a visible Open app action and exposes both workspace/creation actions inside its expandable menu. No authentication service or marketing pages are implied. The implementation adds no UI or animation dependency.
+
+## Transaction UX
+
+Agreement acceptance and workflow actions finish automatically after receipt and current-state verification; successful receipts remain visible as nonblocking notices with explorer links. Pending, unverified and reverted transactions never become success or permit duplicate submission. Workflow actions use a native modal review dialog with keyboard focus and Escape handling; its status can be reopened while a submitted transaction is tracked. Explicit cancellation/refund decisions retain acknowledgment; routine actions use concrete confirmation labels.
+
+Same-vault refresh retains the last displayed snapshot with an Updating indicator and pauses actions until fresh data arrives. Initial reads use a layout skeleton; a different vault or failed read never displays the previous vault data. Unassigned wallets receive an observer notice without losing public/permissionless access. Funding guides allowance → deposit → reserve with separate wallet confirmations, and milestone controls explain unavailable states and next steps. Evidence remains local hash-only with original-file sharing outside the app.

@@ -8,8 +8,9 @@ import { workflowAbi } from "../../lib/workflow-abi";
 import { readWorkflow, actionAllowed, actionArgs, type VaultAction } from "../../lib/workflow";
 import { restoreAction, transactionMatches, type PendingAction } from "../../lib/transaction";
 function message(e: unknown) { return e instanceof Error ? ("shortMessage" in e ? String(e.shortMessage) : e.message).split("\n")[0] : "The action could not be completed."; }
-export function useVaultAction(address: Address | undefined, refresh: () => void) {
+export function useVaultAction(address: Address | undefined, refresh: () => void, onConfirmed: () => void) {
   const wallet = useWallet(); const guard = useRef(false);
+  const [completed,setCompleted] = useState<PendingAction>();
   const [transaction,setTransaction] = useState<PendingAction>(); const [phase,setPhase] = useState("idle"); const [error,setError] = useState(""); const [terminal,setTerminal] = useState(false);
   const key = `lurro:workflow:pending:${address?.toLowerCase()}`;
   useEffect(() => { try { const tx = restoreAction(sessionStorage.getItem(key),address); if (tx) {
@@ -27,7 +28,7 @@ export function useVaultAction(address: Address | undefined, refresh: () => void
       if (receipt.status !== "success" || !transactionMatches(mined,tx)) { setTerminal(true); throw new Error("The transaction reverted or was replaced by a different action. This action is not confirmed."); }
       const current = await readWorkflow(tx.address);
       if (!current.runtimeMatches || !current.termsMatch || current.vault.block < receipt.blockNumber) throw new Error("The receipt succeeded, but the vault snapshot could not be verified yet. Check again.");
-      setTerminal(true); setPhase("confirmed"); refresh(); try { sessionStorage.removeItem(key); } catch { /* Optional storage. */ }
+      setCompleted({ ...tx,hash:receipt.transactionHash }); setTransaction(undefined); setTerminal(false); setPhase("confirmed"); onConfirmed(); refresh(); try { sessionStorage.removeItem(key); } catch { /* Optional storage. */ }
     } catch(e) { setError(message(e)); setPhase("idle"); } finally { guard.current = false; }
   }
   async function send(action: VaultAction) {
@@ -56,5 +57,5 @@ export function useVaultAction(address: Address | undefined, refresh: () => void
     if (tx) await check(tx);
   }
   function clear() { if (!terminal) return; setTransaction(undefined); setTerminal(false); setPhase("idle"); setError(""); try { sessionStorage.removeItem(key); } catch { /* Optional storage. */ } }
-  return { transaction,phase,error,terminal,busy:["checking","wallet","pending"].includes(phase),send,check,clear };
+  return { transaction,completed,phase,error,terminal,busy:["checking","wallet","pending"].includes(phase),send,check,clear };
 }

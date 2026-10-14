@@ -90,3 +90,18 @@ test('live explorer fallback exposes actual payout and refund bytes without RPC 
  assert.equal(events.length,36);assert.equal(events.filter(e=>e.eventName==='PaymentSettled').length,2);assert.equal(events.find(e=>e.eventName==='RefundSettled').args.amount,1000000n);
  console.log('Explorer fallback verified',events.length,'original events');
 });
+
+const ux = source('workflow-ux');
+test('next steps distinguish allowance, vault funds, evidence, payout and actual refund transfer',()=>{
+ const s=fixture();s.proposalId=0n;s.vault.accounting[1]=0n;
+ assert.match(ux.actionHint(s,addr(1),action('reserveMilestone')),/Deposit funds first/);
+ assert.equal(ux.nextWorkflowStep(s).label,'Fund the project');
+ s.vault.accounting[1]=1000000n;assert.equal(ux.nextWorkflowStep(s).label,'Reserve milestone');
+ s.vault.milestones[0].status=1;assert.equal(ux.nextWorkflowStep(s).label,'Submit evidence');
+ s.vault.milestones[0].status=2;assert.match(ux.nextWorkflowStep(s).text,/Verifier/);
+ s.vault.milestones[0].status=6;assert.equal(ux.nextWorkflowStep(s).page,'payments');
+ s.vault.milestones[0].status=7;s.vault.cancelled=true;s.vault.accounting[3]=1000000n;
+ assert.equal(ux.nextWorkflowStep(s).label,'Claim refund');
+ s.vault.accounting[3]=0n;assert.equal(ux.nextWorkflowStep(s).page,'audit');
+ assert.match(ux.actionHint(s,addr(5),action('deposit')),/Funder wallet/);
+});
