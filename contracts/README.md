@@ -102,3 +102,19 @@ Arc references: [connection details](https://docs.arc.io/arc/references/connect-
 - Normal work may invalidate cancellation proposals; this is deliberate protection against stale consent.
 - Public addresses/amounts reveal relationships. No document custody, KYC, cron automation, insurance or fiat integration.
 - Before meaningful Mainnet funding: independent security review, static analysis, actual Arc integration and jurisdictional/participant clearance.
+
+## Mainnet deployment preparation
+
+`script/DeployMainnet.s.sol:DeployMainnetProjectVault` is a separate Mainnet-only
+entrypoint (chain 5042). The Testnet script remains guarded to 5042002.
+Set `LURRO_TERMS_FILE` to the ABI-encoded reviewed terms and `LURRO_DEPLOYER`
+to the funder's public address. The selected Foundry keystore/hardware signer
+must match that address. No secret is read by this script; do not use raw keys in
+shell arguments. The script validates the expected USDC address and delegates
+role, policy, deadline and allocation checks to the unchanged constructor.
+
+It only deploys an unfunded, unlocked vault. It does not approve USDC, deposit,
+accept agreements or reserve milestones. Run a fork/simulation with no
+`--broadcast` first; the release candidate, actual terms, signer and budget still
+require owner review before any Mainnet broadcast. Local mocked-token script
+tests establish guards and absence of implicit funding, not Mainnet operation.
