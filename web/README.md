@@ -15,7 +15,7 @@ Brand assets live in `public/lurro-logo.webp`, `public/lurro-mark.webp`, and `pu
 
 Four primary CTAs (including the header) use an original lightweight interpretation of [React Bits Specular Button](https://reactbits.dev/components/specular-button): CSS rim/surface highlights and element-local pointer events. No animation dependency, WebGL canvas, global pointer listener, or idle animation loop is included. Pointer updates are coalesced with requestAnimationFrame; touch and reduced-motion users retain standard links and focus indicators.
 
-The landing page is marketing. All diagrams are explicitly illustrative, have no fictional financial totals or transaction status, and cannot trigger payments. Proof links point to the deployed, source-verified Arc Testnet vault and documented successful payout/refund. Testnet proof is an automated self-test, not an independent human verification or security audit.
+The landing page is marketing. All diagrams are explicitly illustrative, have no fictional financial totals or transaction status, and cannot trigger payments. Proof links follow the build network: Mainnet deployment/source evidence, or Testnet historical payout/refund. Testnet proof is an automated self-test, not an independent human verification or security audit.
 
 Mainnet deployment is outside this frontend. Navigation anchors, mobile menu, three product-preview buttons and native FAQ accordions work without a private API or signup service. The hero uses a white grid, compact typography and responsive SVG curves above and below the product preview, following the supplied Dub screenshot as a visual reference.
 
@@ -23,9 +23,9 @@ Mainnet deployment is outside this frontend. Navigation anchors, mobile menu, th
 
 The original app layout uses the local Dub sidebar/workspace patterns as visual reference. It includes a responsive sidebar, funding summaries, linked vault list, search/status/role filters, pending actions, and an expandable vault snapshot. The landing page's Explore Lurro CTA opens the app.
 
-Wallet connection uses [RainbowKit](https://rainbowkit.com/docs/custom-wallet-list), Wagmi and TanStack Query. The picker supports installed EIP-6963 browser wallets, Rainbow mobile and WalletConnect. Account/network changes update roles; a wrong-network banner offers Arc Testnet switching. The dashboard never signs or sends a funding/payment transaction. Wallet connection and network approval are performed by the user.
+Wallet connection uses [RainbowKit](https://rainbowkit.com/docs/custom-wallet-list), Wagmi and TanStack Query. The picker supports installed EIP-6963 browser wallets, Rainbow mobile and WalletConnect. Account/network changes update roles; a wrong-network banner offers switching to the selected Arc network. The dashboard never signs or sends a funding/payment transaction. Wallet connection and network approval are performed by the user.
 
-Projects are linked by vault address because the current contract has no project registry. Up to 12 addresses can be saved in this browser; no financial totals or wallet credentials are stored. Public reads work without a wallet. Every refresh discards old balances and reads the generated v1.2 ABI at a pinned Arc Testnet block; any failed read withholds aggregate totals. Reported schema/network/token/P0 limits and the accounting identity are checked. An arbitrary vault reporting this schema is not thereby source-verified or independently audited.
+Projects are linked by vault address because the current contract has no project registry. Up to 12 addresses can be saved in this browser; no financial totals or wallet credentials are stored. Public reads work without a wallet. Every refresh discards old balances and reads the generated v1.2 ABI at a pinned block on the selected Arc network; any failed read withholds aggregate totals. Reported schema/network/token/P0 limits and the accounting identity are checked. An arbitrary vault reporting this schema is not thereby source-verified or independently audited.
 
 Use **Read the Testnet vault** to fetch the documented integration self-test from Arc. Its title is a label for that public test vault; amounts and milestone states come from RPC, not the proof document or fixtures. This is test USDC, not a real-client project. Create Project opens `/app/new/`. Project Overview opens `/app/project/?project=0x…`. Agreement opens `/app/agreement/?project=0x…`. Funding, Milestones, Payments, Governance and Audit Explorer are available at their respective `/app/` routes, with the same `?project=0x…` parameter.
 
@@ -65,7 +65,7 @@ Add future app pages using AppShell and these UI primitives rather than copying 
 
 ## Agreement `/app/agreement/?project=0x…`
 
-Uses the shared AppShell/UI components and a reusable query/snapshot hook also used by Project Overview. Sidebar links and Overview open the selected agreement. The page reads actual terms, allocations, UTC deadlines, role wallets and each acceptance at a pinned Arc Testnet block.
+Uses the shared AppShell/UI components and a reusable query/snapshot hook also used by Project Overview. Sidebar links and Overview open the selected agreement. The page reads actual terms, allocations, UTC deadlines, role wallets and each acceptance at a pinned block on the selected Arc network.
 
 File selection checks `keccak256(exactFileBytes)` locally against `signedDocumentHash`. A generated Lurro JSON document additionally checks chain, every encoded term and each scope commitment against the vault before displaying names/scope text. External PDF/text/Markdown documents can be checked by exact hash and read/downloaded locally. Uploading a file never sends it to a server or RPC. User acknowledgement binds to the selected vault, canonical terms hash and wallet; changing account requires acknowledgement again.
 
@@ -127,7 +127,7 @@ Project names in the switcher, dashboard search and overview come from locally v
 
 ## Network-bound builds and experimental Mainnet preparation
 
-Set `NEXT_PUBLIC_LURRO_NETWORK=testnet` (default) or `mainnet` **before building**.
+Production builds default to Mainnet; development defaults to Testnet. Set `NEXT_PUBLIC_LURRO_NETWORK=mainnet` or `testnet` **before building** to select explicitly. The example configuration now selects Mainnet.
 Invalid values fail closed. Next.js embeds these public values in the static
 bundle; changing a deployment variable without rebuilding does not change its
 network. Keep separate deployments for each environment rather than changing
@@ -137,8 +137,7 @@ build. Switching a wallet never submits an action automatically.
 
 Mainnet stores linked vaults, names and pending receipts under chain-5042 keys;
 existing Testnet keys are retained for compatibility and never read by Mainnet.
-No Mainnet vault or settlement is pre-seeded or claimed. Testnet history stays
-labelled as history, with external Testnet proof links from a Mainnet landing page.
+No project is automatically seeded in Mainnet storage and no Mainnet settlement is claimed. Mainnet landing, Resources and Docs link to the actual deployed Mainnet vault, creation receipt and Sourcify exact-match evidence through `lib/public-proof.ts`. Testnet builds retain their separately labelled historical payout/refund evidence. Mainnet writes remain disabled unless explicitly enabled after review.
 
 Mainnet transactions are **disabled by default**, including creation and
 agreement actions. Only after owner review of the release commit, real terms,

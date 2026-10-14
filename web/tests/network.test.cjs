@@ -59,3 +59,18 @@ test('Mainnet agreement document commits to chain 5042 and changes its exact doc
   assert.equal(JSON.parse(m.document).chainId,5042);
   assert.notEqual(t.terms.signedDocumentHash,m.terms.signedDocumentHash);
 });
+test('production defaults to Mainnet while explicit Testnet builds remain Testnet', () => {
+  const prod=build({ NODE_ENV:'production' })('network');
+  assert.equal(prod.network.chain.id,5042);
+  assert.equal(prod.writesEnabled,false);
+  assert.equal(build({ NODE_ENV:'production',NEXT_PUBLIC_LURRO_NETWORK:'testnet' })('network').network.chain.id,5042002);
+});
+test('Mainnet public proof exposes deployment evidence without relabelling Testnet payments', () => {
+  const proof=main()('public-proof').publicProof;
+  assert.ok(proof.vault.startsWith('https://explorer.arc.io/address/'));
+  assert.ok(proof.cards.some(card=>card.title==='Successful deployment'));
+  assert.ok(proof.cards.some(card=>card.href.includes('sourcify.dev')));
+  assert.ok(proof.cards.every(card=>!card.href.includes('testnet') && !card.title.includes('payout')));
+  assert.ok(!JSON.stringify(proof).includes('Testnet'));
+  assert.ok(build({ NEXT_PUBLIC_LURRO_NETWORK:'testnet' })('public-proof').publicProof.vault.includes('explorer.testnet.arc.io'));
+});

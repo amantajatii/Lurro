@@ -19,7 +19,7 @@ export function networkSettings(value: string | undefined) {
   };
 }
 // Network is fixed for each build. Rebuild to change it: no in-flight action can migrate chains.
-export const network = networkSettings(process.env.NEXT_PUBLIC_LURRO_NETWORK);
+export const network = networkSettings(process.env.NEXT_PUBLIC_LURRO_NETWORK ?? (process.env.NODE_ENV === "production" ? "mainnet" : "testnet"));
 export const mainnetWritesEnabled = process.env.NEXT_PUBLIC_LURRO_MAINNET_WRITES_ENABLED === "true";
 export const writesEnabled = !network.mainnet || mainnetWritesEnabled;
 export function assertWriteAccess(acknowledged = false) {

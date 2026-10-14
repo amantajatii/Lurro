@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Navigation } from "../../components/navigation";
 import { network, writesEnabled } from "../../lib/network";
+import { publicProof } from "../../lib/public-proof";
 import styles from "./docs.module.css";
 
 export const metadata: Metadata = {
@@ -38,7 +39,7 @@ export default function DocsPage() {
           <h1>From agreement<br />to accountable payment.</h1>
           <p className={styles.lead}>Define who gets paid, secure the funds, and follow every milestone to its receipt. Here’s how to use the Lurro workspace.</p>
           <div className={styles.actions}><Link href="/app/new/" className="button">Create a project <span aria-hidden="true">→</span></Link><a href="#quick-start" className="button button-secondary">Read the quick start</a></div>
-          <div className={styles.notice}><strong>{network.label} · {network.unit}</strong><p>Lurro is an unaudited prototype. {writesEnabled ? "Transactions require your explicit wallet confirmation." : "Mainnet transactions are disabled in this build."} Testnet receipts demonstrate test flows; they do not establish Mainnet readiness.</p></div>
+          <div className={styles.notice}><strong>{network.label} · {network.unit}</strong><p>Lurro is an unaudited prototype. {writesEnabled ? "Transactions require your explicit wallet confirmation." : "Mainnet transactions are disabled in this build."} {network.mainnet ? "Mainnet deployment and source are publicly verifiable. Inspect successful transaction receipts to confirm funding and settlement." : "Testnet receipts demonstrate test flows; they do not establish Mainnet readiness."}</p></div>
         </section>
 
         <section id="quick-start" className={styles.section}>
@@ -100,7 +101,7 @@ export default function DocsPage() {
         <section id="audit" className={styles.section}>
           <h2>Follow the proof</h2><p><Link href="/app/audit/">Audit Explorer</Link> reads the selected vault’s contract events. Trace agreement acceptance, funding, evidence decisions, payouts, and refunds back to their transactions.</p>
           <p>Check the chain, vault address, recipient, amount, and successful receipt. A recorded approval proves that the authorized verifier made that decision; the blockchain does not independently assess work quality.</p>
-          <a href={`${github}/contracts/TESTNET-PROOF.md`} target="_blank" rel="noopener noreferrer">Inspect the documented Testnet self-test ↗</a>
+          <a href={publicProof.vault} target="_blank" rel="noopener noreferrer">Inspect the {network.shortLabel} vault ↗</a>
         </section>
 
         <section id="limits" className={styles.section}>

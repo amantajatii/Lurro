@@ -1,5 +1,6 @@
 "use client";
 import { network } from "../lib/network";
+import { publicProof } from "../lib/public-proof";
 
 import { useEffect, useRef, useState, type ElementType, type PointerEvent as ReactPointerEvent, type MouseEvent as ReactMouseEvent } from "react";
 import Link from "next/link";
@@ -17,7 +18,7 @@ const workflow = [
   { title: "Audit Explorer", href: "/app/audit/", icon: HiOutlineMagnifyingGlass },
 ];
 const resources = [
-  { title: "Testnet proof", description: "Inspect the deployed vault and real receipts.", href: network.mainnet ? "https://explorer.testnet.arc.io/address/0xa3b6db6a52ff3cf32438c0989af041d77d3dacae" : "/app/audit/?project=0xa3b6db6a52ff3cf32438c0989af041d77d3dacae", icon: HiOutlineMagnifyingGlass },
+  { title: publicProof.title, description: publicProof.description, href: publicProof.vault, icon: HiOutlineMagnifyingGlass },
   { title: "Protocol source", description: "Read the contract and internal security review.", href: "https://github.com/amantajatii/Lurro", icon: HiOutlineCodeBracket },
   { title: "FAQs", description: "Understand the rules and current limitations.", href: "/#faq", icon: HiOutlineQuestionMarkCircle },
 ];
