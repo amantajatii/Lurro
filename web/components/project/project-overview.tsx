@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { HiOutlinePlus, HiOutlineFolder, HiOutlineDocumentText, HiOutlineFlag, HiOutlineShieldCheck, HiOutlineArrowUpRight, HiOutlineArrowRight, HiOutlineChevronDown, HiOutlineClipboardDocument, HiOutlineCheck, HiOutlineArrowPath, HiOutlineLink, HiOutlineXMark, HiOutlineUsers, HiOutlineClock } from "react-icons/hi2";
 import { useWallet } from "../dashboard/use-wallet";
 import { FormField } from "../ui/form-field";
+import { useProjectNames } from "./use-project-names";
 import { useProjectRead } from "./use-project-read";
 import { AppShell } from "../workspace/app-shell";
 import { addressFrom, chain, explorer, formatUSDC, proofVault, readVault, rolesFor, shortAddress, statuses, vaultStatus } from "../../lib/vault-reader";
@@ -18,6 +19,7 @@ import { agreementRoute, projectRoute } from "../../lib/project-routes";
 import { chainDate, projectNextSteps, projectOverview } from "../../lib/project-overview";
 const milestoneNotes = ["Scope is agreed; funds are not yet reserved.", "The full milestone allocation is reserved.", "Evidence has been submitted; review or timeout escalation may be due.", "Evidence was rejected; check the resubmission deadline.", "Verifier approved; the challenge window is still open.", "An arbitration decision or timeout fallback is pending.", "Ready for atomic payout to all assigned recipients.", "The milestone was settled to its assigned recipients.", "This milestone is cancelled; its rights will not be paid."];
 export function ProjectOverview() {
+  const names = useProjectNames();
   const router = useRouter(), wallet = useWallet();
   const { address, parameterError, data: vault, loading, error: readError, refresh } = useProjectRead(readVault);
   const [entry, setEntry] = useState(""), [entryError, setEntryError] = useState("");
@@ -46,7 +48,7 @@ export function ProjectOverview() {
   }
   return <AppShell title="Project overview" mainId="overview-main" activePage="overview" className="overview-shell" mainClassName="overview-main" projectAddress={address}>
 <AppPageHeading
-  title={isProof ? "Lurro integration self-test" : vault ? `Vault ${shortAddress(vault.address)}` : "Project overview"}
+  title={vault && names[vault.address.toLowerCase()]?.name || (isProof ? "Lurro integration self-test" : vault ? `Vault ${shortAddress(vault.address)}` : "Project overview")}
   description={vault ? "Your agreement, funds, and milestones. One shared view." : "Open a vault to see its agreement and funding directly from Arc."}
   leading={<Link className="overview-back" href="/app/"><HiOutlineFolder />All projects</Link>}
   actions={vault && <div className="dash-heading-actions"><Button onClick={() => void copy(`${window.location.origin}${projectRoute(vault.address)}`, "Project link")}><HiOutlineLink />Copy link</Button><Button variant="primary" onClick={save}><HiOutlinePlus />Save to dashboard</Button></div>}

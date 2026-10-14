@@ -1,7 +1,7 @@
 "use client";
 import { ProjectSkeleton } from "../ui/project-skeleton";
 import { WalletNotice } from "../ui/wallet-notice";
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { HiOutlineExclamationTriangle, HiOutlineDocumentText, HiOutlineShieldCheck, HiOutlineArrowLeft, HiOutlineArrowRight, HiOutlineArrowUpRight, HiOutlineArrowPath, HiOutlineArrowUpTray, HiOutlineCheck, HiOutlineClock, HiOutlineWallet, HiOutlineLockClosed, HiOutlineChevronDown, HiOutlineClipboardDocument } from "react-icons/hi2";
 import { AppShell } from "../workspace/app-shell";
@@ -10,6 +10,7 @@ import { AppPageHeading } from "../ui/page-heading";
 import { Button, ButtonLink } from "../ui/button";
 import { FormField } from "../ui/form-field";
 import { useWallet } from "../dashboard/use-wallet";
+import { saveVerifiedProjectName } from "../../lib/project-bookmarks";
 import { useProjectRead } from "./use-project-read";
 import { useAgreementTransaction } from "./use-agreement-transaction";
 import { agreementEligibility, readAgreement, reviewDocument, type AgreementSnapshot, type ReviewedDocument } from "../../lib/agreement";
@@ -33,6 +34,11 @@ function AgreementContent({ project }: { project: ProjectRead }) {
   const [copied, setCopied] = useState("");
   const uploadVersion = useRef(0);
   const document = file?.review.hash === vault?.terms.signedDocumentHash ? file?.review : undefined;
+  useEffect(() => {
+    if (address && document?.name) {
+      try { saveVerifiedProjectName(address,document.name,document.hash); } catch { /* Names are optional local metadata. */ }
+    }
+  },[address,document?.name,document?.hash]);
   const eligible = snapshot ? agreementEligibility(snapshot, wallet.account, document) : undefined;
   const acknowledgementKey = `${address}:${snapshot?.termsHash}:${wallet.account?.toLowerCase()}:${eligible?.canLock ? "lock" : "accept"}`;
   const acknowledged = acknowledgement === acknowledgementKey;

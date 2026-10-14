@@ -35,3 +35,29 @@ test('bookmark writers notify mounted switchers in the same tab and storage chan
     unsubscribe(); saveProjectBookmarks([]); assert.equal(changes,2);
   } finally { global.window=oldWindow; global.localStorage=oldStorage; }
 });
+
+const { parseProjectNames, saveVerifiedProjectName, projectNamesSnapshot, projectNamesKey } = source('project-bookmarks.ts');
+test('project names are bound to a valid address and document hash, bounded, and resilient to malformed metadata', () => {
+  const hash = '0x'+'ab'.repeat(32);
+  assert.deepEqual(parseProjectNames('{broken'),{});
+  assert.deepEqual(parseProjectNames('[]'),{});
+  assert.deepEqual(parseProjectNames(JSON.stringify({ [vault]:{ name:'Lurro Demo',documentHash:'invalid' } })),{});
+  const names = parseProjectNames(JSON.stringify({ [vault]:{ name:'  Lurro Demo  ',documentHash:hash },invalid:{name:'Other',documentHash:hash} }));
+  assert.equal(names[vault].name,'Lurro Demo'); assert.equal(names[vault].documentHash,hash);
+  assert.equal(Object.keys(names).length,1);
+  assert.equal(parseProjectNames(JSON.stringify({[vault]:{name:'x'.repeat(120),documentHash:hash}}))[vault].name.length,100);
+});
+test('learning a verified project name updates switchers once without migrating address bookmarks', () => {
+  const previousWindow=global.window, previousStorage=global.localStorage;
+  const target=new EventTarget(), values=new Map();
+  global.window=target; global.localStorage={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value)};
+  try {
+    saveProjectBookmarks([vault]); let changes=0; const unsubscribe=subscribeProjectBookmarks(()=>changes++);
+    saveVerifiedProjectName(vault,'Lurro Demo','0x'+'ab'.repeat(32));
+    assert.equal(changes,1); assert.equal(parseProjectNames(projectNamesSnapshot())[vault].name,'Lurro Demo');
+    assert.equal(readProjectBookmarks()[0].toLowerCase(),vault);
+    saveVerifiedProjectName(vault,'Lurro Demo','0x'+'ab'.repeat(32)); assert.equal(changes,1);
+    const event=new Event('storage');event.key=projectNamesKey;target.dispatchEvent(event);assert.equal(changes,2);
+    unsubscribe();
+  } finally {global.window=previousWindow;global.localStorage=previousStorage;}
+});

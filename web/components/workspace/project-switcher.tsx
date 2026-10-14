@@ -7,11 +7,14 @@ import { HiOutlineCheck, HiOutlineChevronDown, HiOutlineFolder, HiOutlinePlus, H
 import { addressFrom, shortAddress } from "../../lib/vault-reader";
 import { switchProjectRoute } from "../../lib/project-routes";
 import { parseProjectBookmarks, projectBookmarksSnapshot, subscribeProjectBookmarks } from "../../lib/project-bookmarks";
+import { useProjectNames } from "../project/use-project-names";
 import { Button } from "../ui/button";
 import { FormField } from "../ui/form-field";
 
 export function ProjectSwitcher({ section, address, disabled = false, onNavigate }: { section: string; address?: string; disabled?: boolean; onNavigate: () => void }) {
   const router = useRouter();
+  const names = useProjectNames();
+  const label = (vault: string) => names[vault.toLowerCase()]?.name || `Vault ${shortAddress(vault)}`;
   const raw = useSyncExternalStore(subscribeProjectBookmarks, projectBookmarksSnapshot, () => "[]");
   const saved = parseProjectBookmarks(raw);
   let current: string | undefined;
@@ -44,14 +47,14 @@ export function ProjectSwitcher({ section, address, disabled = false, onNavigate
   }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) close(); }}>
     <button ref={trigger} type="button" className="dash-workspace project-switcher-trigger" disabled={disabled} aria-expanded={open && !disabled} aria-controls={id} onClick={() => { if (open) close(); else setOpen(true); }}>
       <span className="dash-workspace-mark"><Image src="/lurro-mark.webp" width={23} height={23} alt="" unoptimized /></span>
-      <span className="project-switcher-label"><strong>{current ? `Vault ${shortAddress(current)}` : "Project workspace"}</strong><span>Arc Testnet</span></span>
+      <span className="project-switcher-label"><strong>{current ? label(current) : "Project workspace"}</strong><span>Arc Testnet</span></span>
       <HiOutlineChevronDown aria-hidden="true" />
     </button>
     {open && !disabled && <div id={id} className="project-switcher-popover" aria-label="Switch project">
       <span className="project-switcher-caption">{projects.length ? "YOUR PROJECTS" : "PROJECTS"}</span>
       {projects.length ? <ul className="project-switcher-list">{projects.map(vault => <li key={vault}>
         <Link href={switchProjectRoute(section, vault)} prefetch={false} onClick={navigate} className={vault === current ? "project-switcher-active" : ""} aria-current={vault === current ? "true" : undefined} title={vault}>
-          <HiOutlineFolder aria-hidden="true" /><span><strong>Vault {shortAddress(vault)}</strong><small>{vault === current ? "Current project" : "Saved in this browser"}</small></span>{vault === current && <HiOutlineCheck aria-label="Selected" />}
+          <HiOutlineFolder aria-hidden="true" /><span><strong>{label(vault)}</strong><small>{vault === current ? `Current · ${shortAddress(vault)}` : shortAddress(vault)}</small></span>{vault === current && <HiOutlineCheck aria-label="Selected" />}
         </Link>
       </li>)}</ul> : <p className="project-switcher-empty">No saved projects yet. Open a vault or create your first project.</p>}
       <div className="project-switcher-actions">

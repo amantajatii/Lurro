@@ -14,7 +14,7 @@ import { useWallet } from "../dashboard/use-wallet";
 import { arcClient as client } from "../../lib/arc-client";
 import { buildProject, completedProjectSteps, validatePeople, validateRecipients, type ProjectDraft, type ProjectReview, type RecipientDraft, type MilestoneDraft } from "../../lib/project-draft";
 import { chain, explorer, formatUSDC, shortAddress } from "../../lib/vault-reader";
-import { readProjectBookmarks, saveProjectBookmarks } from "../../lib/project-bookmarks";
+import { readProjectBookmarks, saveProjectBookmarks, saveVerifiedProjectName } from "../../lib/project-bookmarks";
 import { projectRoute } from "../../lib/project-routes";
 import { vaultAbi } from "../../lib/vault-abi";
 import { deploymentAbi, vaultBytecode } from "../../lib/vault-deployment";
@@ -91,6 +91,8 @@ export function CreateProject() {
       try { sessionStorage.removeItem("lurro:pending-creation:v1"); } catch { /* Optional storage. */ }
       try {
         saveProjectBookmarks([receipt.contractAddress, ...readProjectBookmarks()]);
+        const metadata: unknown = JSON.parse(documentText);
+        if (metadata && typeof metadata === "object" && "name" in metadata && typeof metadata.name === "string") saveVerifiedProjectName(receipt.contractAddress,metadata.name,terms.signedDocumentHash);
       } catch { setBookmarkWarning(true); }
     } catch (e) { setError(e instanceof Error ? e.message.split("\n")[0] : "Receipt could not be read. Check the explorer and retry the receipt read."); setPhase("idle"); }
   }
