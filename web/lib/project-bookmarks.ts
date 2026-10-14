@@ -1,6 +1,7 @@
+import { network } from "./network";
 import { getAddress, isAddress } from "viem";
 
-export const projectBookmarksKey = "lurro:testnet:linked-vaults:v1";
+export const projectBookmarksKey = `${network.namespace}:linked-vaults:v1`;
 export const projectBookmarksEvent = "lurro:projects-changed";
 export function parseProjectBookmarks(raw: string | null): string[] {
   try {
@@ -24,7 +25,7 @@ export function subscribeProjectBookmarks(callback: () => void) {
   return () => { window.removeEventListener("storage", onStorage); window.removeEventListener(projectBookmarksEvent, callback); };
 }
 
-export const projectNamesKey = "lurro:testnet:project-names:v1";
+export const projectNamesKey = `${network.namespace}:project-names:v1`;
 export type ProjectNames = Record<string, { name: string; documentHash: string }>;
 export function parseProjectNames(raw: string | null): ProjectNames {
   const names: ProjectNames = {};

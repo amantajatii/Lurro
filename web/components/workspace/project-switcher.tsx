@@ -1,4 +1,5 @@
 "use client";
+import { network } from "../../lib/network";
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -47,7 +48,7 @@ export function ProjectSwitcher({ section, address, disabled = false, onNavigate
   }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) close(); }}>
     <button ref={trigger} type="button" className="dash-workspace project-switcher-trigger" disabled={disabled} aria-expanded={open && !disabled} aria-controls={id} onClick={() => { if (open) close(); else setOpen(true); }}>
       <span className="dash-workspace-mark"><Image src="/lurro-mark.webp" width={23} height={23} alt="" unoptimized /></span>
-      <span className="project-switcher-label"><strong>{current ? label(current) : "Project workspace"}</strong><span>Arc Testnet</span></span>
+      <span className="project-switcher-label"><strong>{current ? label(current) : "Project workspace"}</strong><span>{network.label}</span></span>
       <HiOutlineChevronDown aria-hidden="true" />
     </button>
     {open && !disabled && <div id={id} className="project-switcher-popover" aria-label="Switch project">
@@ -62,7 +63,7 @@ export function ProjectSwitcher({ section, address, disabled = false, onNavigate
         <button type="button" aria-expanded={enterAddress} onClick={() => { setEnterAddress(value => !value); setError(""); requestAnimationFrame(() => root.current?.querySelector<HTMLInputElement>("input")?.focus()); }}><HiOutlineLink aria-hidden="true" />Open vault address</button>
       </div>
       {enterAddress && <form className="project-switcher-form" onSubmit={submit}>
-        <FormField label="Arc Testnet vault address" value={input} onChange={value => { setInput(value); setError(""); }} placeholder="0x…" maxLength={42} hint="Vault data is read from Arc after opening." />
+        <FormField label={`${network.label} vault address`} value={input} onChange={value => { setInput(value); setError(""); }} placeholder="0x…" maxLength={42} hint="Vault data is read from Arc after opening." />
         {error && <p role="alert" className="dash-field-error">{error}</p>}
         <Button type="submit" variant="primary">Open project</Button>
       </form>}

@@ -1,4 +1,5 @@
 "use client";
+import { network } from "../lib/network";
 
 import { useEffect, useRef, useState, type ElementType, type PointerEvent as ReactPointerEvent, type MouseEvent as ReactMouseEvent } from "react";
 import Link from "next/link";
@@ -16,7 +17,7 @@ const workflow = [
   { title: "Audit Explorer", href: "/app/audit/", icon: HiOutlineMagnifyingGlass },
 ];
 const resources = [
-  { title: "Testnet proof", description: "Inspect the deployed vault and real receipts.", href: "/app/audit/?project=0xa3b6db6a52ff3cf32438c0989af041d77d3dacae", icon: HiOutlineMagnifyingGlass },
+  { title: "Testnet proof", description: "Inspect the deployed vault and real receipts.", href: network.mainnet ? "https://explorer.testnet.arc.io/address/0xa3b6db6a52ff3cf32438c0989af041d77d3dacae" : "/app/audit/?project=0xa3b6db6a52ff3cf32438c0989af041d77d3dacae", icon: HiOutlineMagnifyingGlass },
   { title: "Protocol source", description: "Read the contract and internal security review.", href: "https://github.com/amantajatii/Lurro", icon: HiOutlineCodeBracket },
   { title: "FAQs", description: "Understand the rules and current limitations.", href: "/#faq", icon: HiOutlineQuestionMarkCircle },
 ];
@@ -73,7 +74,7 @@ export function Navigation() {
           <div className="landing-menu-heading"><span>THE LURRO WORKSPACE</span><Link href="/app/" onClick={close}>Open dashboard<HiOutlineArrowRight aria-hidden="true" /></Link></div>
           <div className="landing-feature-grid">{products.map(item => <FeatureLink key={item.title} {...item} onNavigate={close} />)}</div>
           <div className="landing-workflow-links">{workflow.map(item => <Link key={item.title} href={item.href} onClick={close}><item.icon aria-hidden="true" />{item.title}<HiOutlineArrowRight aria-hidden="true" /></Link>)}</div>
-          <div className="landing-menu-footer"><span>Arc Testnet · test USDC</span><Link href="/app/new/" onClick={close}>Create your first project<HiOutlineArrowRight aria-hidden="true" /></Link></div>
+          <div className="landing-menu-footer"><span>{network.label} · {network.unit}</span><Link href="/app/new/" onClick={close}>Create your first project<HiOutlineArrowRight aria-hidden="true" /></Link></div>
         </div>}
       </div>
       <div className="landing-nav-group" onPointerEnter={event => enterPanel("resources", event)} onPointerLeave={leavePanel}>

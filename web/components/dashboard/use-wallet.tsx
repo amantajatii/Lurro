@@ -1,4 +1,5 @@
 "use client";
+import { network } from "../../lib/network";
 import { createContext, useContext, useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 import { WagmiProvider, useAccount, useDisconnect, useSwitchChain } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -27,7 +28,7 @@ function useRainbowWallet() {
   async function switchNetwork() {
     setError("");
     try { await switcher.switchChainAsync({ chainId: chain.id }); }
-    catch { setError("Network switch was not completed. Switch to Arc Testnet and retry."); }
+    catch { setError(`Network switch was not completed. Switch to ${network.label} and retry.`); }
   }
   return { account: account.isConnected ? account.address : undefined, network: account.chainId, busy: account.isConnecting || switcher.isPending, error, provider: account.isConnected && connection?.key === key ? connection.provider : undefined, discover: () => openConnectModal?.(), openAccount: () => openAccountModal?.(), switchNetwork, disconnect: () => disconnect.disconnect() };
 }

@@ -6,7 +6,7 @@ const ts = require('typescript');
 const { keccak256, toHex, encodeDeployData } = require('viem');
 function source(file) {
   const code = ts.transpileModule(fs.readFileSync(path.join(__dirname, '../lib', file), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
-  const exports = {}; new Function('require', 'exports', code)(require, exports); return exports;
+  const exports = {}; new Function('require', 'exports', code)(name => name === "./network" ? source("network.ts") : require(name), exports); return exports;
 }
 const { buildProject, parseAmount, completedProjectSteps } = source('project-draft.ts');
 const { deploymentAbi, vaultBytecode } = source('vault-deployment.ts');

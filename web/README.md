@@ -123,3 +123,29 @@ Agreement acceptance and workflow actions finish automatically after receipt and
 Same-vault refresh retains the last displayed snapshot with an Updating indicator and pauses actions until fresh data arrives. Initial reads use a layout skeleton; a different vault or failed read never displays the previous vault data. Unassigned wallets receive an observer notice without losing public/permissionless access. Funding guides allowance → deposit → reserve with separate wallet confirmations, and milestone controls explain unavailable states and next steps. Evidence remains local hash-only with original-file sharing outside the app.
 
 Project names in the switcher, dashboard search and overview come from locally verified agreement metadata. Creation saves the name only after the successful vault receipt and document-hash check; uploading the original matching agreement can populate names for existing vaults. A separate address/document-hash-bound local name cache preserves the existing address-only bookmark format. Unknown names fall back to a short vault address, and names are not inferred from RPC or treated as financial authority.
+
+
+## Network-bound builds and experimental Mainnet preparation
+
+Set `NEXT_PUBLIC_LURRO_NETWORK=testnet` (default) or `mainnet` **before building**.
+Invalid values fail closed. Next.js embeds these public values in the static
+bundle; changing a deployment variable without rebuilding does not change its
+network. Keep separate deployments for each environment rather than changing
+the network of an open workflow. RainbowKit recognizes both networks; the app's
+reads, simulations, writes, document hashes and explorer links stay bound to its
+build. Switching a wallet never submits an action automatically.
+
+Mainnet stores linked vaults, names and pending receipts under chain-5042 keys;
+existing Testnet keys are retained for compatibility and never read by Mainnet.
+No Mainnet vault or settlement is pre-seeded or claimed. Testnet history stays
+labelled as history, with external Testnet proof links from a Mainnet landing page.
+
+Mainnet transactions are **disabled by default**, including creation and
+agreement actions. Only after owner review of the release commit, real terms,
+signer and strictly capped budget may a deployment be rebuilt with
+`NEXT_PUBLIC_LURRO_MAINNET_WRITES_ENABLED=true`. This flag is a release control,
+not contract authorization. Every Mainnet action still requires an explicit
+acknowledgement of real USDC, immutable recipients and the unaudited prototype,
+plus live role/network/state checks and wallet confirmation. The deployment
+script is documented in `contracts/README.md`; this preparation does not deploy
+or certify Mainnet operation.

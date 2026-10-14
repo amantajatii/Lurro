@@ -5,7 +5,7 @@ const path = require('node:path');
 const ts = require('typescript');
 function source(file) {
   const code = ts.transpileModule(fs.readFileSync(path.join(__dirname, '../lib', file), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
-  const exports = {}; new Function('require', 'exports', code)(require, exports); return exports;
+  const exports = {}; new Function('require', 'exports', code)(name => name === "./network" ? source("network.ts") : require(name), exports); return exports;
 }
 const { switchProjectRoute } = source('project-routes.ts');
 const { parseProjectBookmarks, saveProjectBookmarks, readProjectBookmarks, subscribeProjectBookmarks, projectBookmarksKey } = source('project-bookmarks.ts');

@@ -27,6 +27,7 @@ for (const kind of ['agreement','workflow']) {
     const snapshot = { termsHash:hash,runtimeMatches:outcome !== 'unverified',termsMatch:true,vault:{ block:10n } };
     const client = { waitForTransactionReceipt:async () => ({ status:outcome === 'reverted' ? 'reverted':'success',transactionHash:hash,blockNumber:10n }),getTransaction:async () => ({ input:'0x1234',value:0n }) };
     const mocks = {
+      '../../lib/network':{ pendingStorageKey:()=> 'pending',assertWriteAccess:()=>{} },
       react:h.react, viem:{ createWalletClient:() => { sends++; return {}; } },
       '../dashboard/use-wallet':{ useWallet:() => ({ account:addr,provider:{ request:async()=>[addr] } }) },
       '../../lib/arc-client':{ arcClient:client }, '../../lib/vault-reader':{ chain:{ id:5042002 } },
@@ -68,3 +69,34 @@ test('project refresh preserves display, isolates another vault and drops failed
   requests[2].reject(Error('RPC unavailable')); await Promise.resolve(); hook = render();
   assert.equal(hook.loading,false); assert.equal(hook.data,undefined); assert.match(hook.error,/RPC unavailable/);
 });
+
+for (const kind of ['agreement','workflow']) {
+  for (const scenario of ['release-disabled','missing-consent','wrong-wallet-chain']) test(`${kind}: Mainnet ${scenario} never opens a signing request`,async()=>{
+    const h=harness();let requests=0,signers=0,reads=0;
+    const code=ts.transpileModule(fs.readFileSync(path.join(__dirname,'../lib/network.ts'),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText;
+    const settings={};new Function('require','exports','process',code)(require,settings,{env:{NEXT_PUBLIC_LURRO_NETWORK:'mainnet',NEXT_PUBLIC_LURRO_MAINNET_WRITES_ENABLED:scenario==='release-disabled'?'false':'true'}});
+    const previous=global.sessionStorage;global.sessionStorage={getItem:()=>null,setItem:()=>{},removeItem:()=>{}};
+    const wallet={account:addr,provider:{request:async({method})=>{requests++;return method==='eth_accounts'?[addr]:'0x4cef52';}}};
+    const mocks={
+      react:h.react,viem:{createWalletClient:()=>{signers++;throw Error('Unexpected signer');}},
+      '../dashboard/use-wallet':{useWallet:()=>wallet},'../../lib/network':settings,
+      '../../lib/vault-reader':{chain:{id:5042}},'../../lib/arc-client':{arcClient:{getChainId:async()=>5042}},
+      '../../lib/agreement-abi':{agreementAbi:[]},'../../lib/workflow-abi':{workflowAbi:[]},
+      '../../lib/agreement':{restoreAgreementTransaction:()=>undefined,readAgreement:async()=>{reads++;throw Error('Unexpected read');}},
+      '../../lib/transaction':{restoreAction:()=>undefined},
+      '../../lib/workflow':{readWorkflow:async()=>{reads++;throw Error('Unexpected read');}},
+    };
+    try{
+      const agreement=kind==='agreement';
+      const hooks=load(agreement?'project/use-agreement-transaction.ts':'workflow/use-vault-action.ts',mocks);
+      const render=()=>agreement?hooks.useAgreementTransaction(addr,()=>{}):hooks.useVaultAction(addr,()=>{},()=>{});
+      const tx=h.render(render),ack=scenario!=='missing-consent';
+      if(agreement)await tx.send('accept',{},undefined,ack);
+      else await tx.send({name:'deposit',amount:1000000n,label:'Deposit'},ack);
+      const result=h.render(render);
+      assert.match(result.error,scenario==='release-disabled'?/disabled/:scenario==='missing-consent'?/Confirm/:/Arc Mainnet/);
+      assert.equal(signers,0);assert.equal(reads,0);
+      if(scenario!=='wrong-wallet-chain')assert.equal(requests,0);
+    }finally{global.sessionStorage=previous;}
+  });
+}

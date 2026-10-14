@@ -1,4 +1,5 @@
 "use client";
+import { network } from "../../lib/network";
 import { useState } from "react";
 import { AppCard } from "../ui/card";
 import { Button, ButtonLink } from "../ui/button";
@@ -6,7 +7,7 @@ import { FormField } from "../ui/form-field";
 import { WorkflowFrame, Metrics, MilestoneHeading, ActionButton, Deadline, type WorkflowContext } from "./workflow-frame";
 import { depositCapacity, parseAmount } from "../../lib/workflow";
 import { formatUSDC, shortAddress, statuses } from "../../lib/vault-reader";
-export function FundingPage() { return <WorkflowFrame section="funding" title="Funding" description="Deposit test USDC, reserve agreed milestones, and track the funds held in your vault.">{ctx => <FundingContent ctx={ctx} />}</WorkflowFrame>; }
+export function FundingPage() { return <WorkflowFrame section="funding" title="Funding" description={`Deposit ${network.unit}, reserve agreed milestones, and track the funds held in your vault.`}>{ctx => <FundingContent ctx={ctx} />}</WorkflowFrame>; }
 function FundingContent({ ctx }: { ctx: WorkflowContext }) {
   const { snapshot:s } = ctx; const [value,setValue] = useState(() => { const capacity = depositCapacity(s); return capacity > 0n ? formatUSDC(capacity).replaceAll(",", "") : ""; }); let amount: bigint | undefined; let error = "";
   try { if (value) amount = parseAmount(value); } catch(e) { error = e instanceof Error ? e.message : "Invalid amount."; }

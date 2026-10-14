@@ -1,11 +1,11 @@
 import { isAddress, getAddress, keccak256, toHex, type Address } from "viem";
-import { arcTestnet } from "viem/chains";
+import { network } from "./network";
 import { arcClient as client } from "./arc-client";
 import { vaultAbi } from "./vault-abi";
 
-export const chain = arcTestnet;
-export const explorer = "https://explorer.testnet.arc.io";
-export const proofVault = "0xa3b6db6a52ff3cf32438c0989af041d77d3dacae";
+export const chain = network.chain;
+export const explorer = network.explorer;
+export const proofVault = network.proofVault;
 export const statuses = ["Planned", "Reserved", "Submitted", "Rejected", "Approved", "Disputed", "Claimable", "Paid", "Cancelled"];
 
 export function addressFrom(value: string): Address {
@@ -30,7 +30,7 @@ export async function readVault(address: Address) {
   // Narrow each inferred union once, using the generated ABI for runtime decoding.
   const t = terms as Extract<typeof terms, { funder: Address }>;
   const a = accounting as readonly [bigint, bigint, bigint, bigint, bigint, bigint];
-  if (schema !== keccak256(toHex("LURRO_PROJECT_TERMS_V1_2")) || deploymentChain !== BigInt(chain.id) || t.usdcToken.toLowerCase() !== "0x3600000000000000000000000000000000000000") throw new Error("This address does not report a supported Lurro v1.2 Arc Testnet vault.");
+  if (schema !== keccak256(toHex("LURRO_PROJECT_TERMS_V1_2")) || deploymentChain !== BigInt(chain.id) || t.usdcToken.toLowerCase() !== "0x3600000000000000000000000000000000000000") throw new Error(`This address does not report a supported Lurro v1.2 ${network.label} vault.`);
   if (t.milestones.length < 1 || t.milestones.length > 3 || t.recipients.length < 1 || t.recipients.length > 5) throw new Error("This address does not report supported P0 milestone and recipient limits.");
   if (a[0] !== a.slice(1).reduce((sum, amount) => sum + amount, 0n)) throw new Error("Vault accounting is inconsistent. Summary withheld.");
   const milestones = await Promise.all(t.milestones.map((m, index) => client.readContract({ address, abi: vaultAbi, functionName: "effectiveStatus", args: [BigInt(index)], blockNumber: block.number }).then(status => ({ ...m, status, index }))));

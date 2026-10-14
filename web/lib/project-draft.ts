@@ -1,3 +1,4 @@
+import { network } from "./network";
 import { getAddress, isAddress, keccak256, toHex, zeroAddress, type Hex } from "viem";
 export const usdc = "0x3600000000000000000000000000000000000000" as const;
 const week = 604800n;
@@ -71,7 +72,7 @@ export function buildProject(draft: ProjectDraft, salt: Hex, nowSeconds: number)
   recipients.forEach((r, i) => { if (!milestones.some(m => m.recipientAmounts[i] > 0n)) throw new Error(`${r.name.trim() || r.address}: needs an allocation in at least one milestone.`); });
   const base = { projectSalt: salt, funder, usdcToken: usdc, verifier, primaryArbiter, backupArbiter, recipients: recipients.map(r => r.address), milestones, reviewPeriodSeconds: 259200, approvalChallengeSeconds: 172800, rejectionChallengeSeconds: 172800, backupDelaySeconds: 259200, arbitrationPeriodSeconds: 604800, cancellationProposalSeconds: 604800, maxEvidenceRevisions: 3, fallbackPolicy: 0, cancellationPolicy: 0, recoveryPolicy: 0 };
   // The downloaded UTF-8 document is the hash preimage. Acceptance is a separate on-chain action.
-  const document = JSON.stringify({ schema: "LURRO_PROJECT_DOCUMENT_V1_2", chainId: 5042002, name: draft.name.trim(), description: draft.description.trim(), recipients: recipients.map(r => ({ address: r.address, name: r.name.trim() })), scopes: draft.milestones.map(m => ({ title: m.title.trim(), scope: m.scope.trim() })), terms: base }, (_, value) => typeof value === "bigint" ? value.toString() : value, 2) + "\n";
+  const document = JSON.stringify({ schema: "LURRO_PROJECT_DOCUMENT_V1_2", chainId: network.chain.id, name: draft.name.trim(), description: draft.description.trim(), recipients: recipients.map(r => ({ address: r.address, name: r.name.trim() })), scopes: draft.milestones.map(m => ({ title: m.title.trim(), scope: m.scope.trim() })), terms: base }, (_, value) => typeof value === "bigint" ? value.toString() : value, 2) + "\n";
   const terms = { ...base, signedDocumentHash: keccak256(toHex(document)) };
   return { terms, document, total, recipients, titles: draft.milestones.map(m => m.title.trim()), name: draft.name.trim(), description: draft.description.trim(), scopes: draft.milestones.map(m => m.scope.trim()) };
 }

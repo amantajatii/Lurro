@@ -1,4 +1,5 @@
 "use client";
+import { network, pendingStorageKey, assertWriteAccess } from "../../lib/network";
 import { useEffect, useRef, useState } from "react";
 import { createWalletClient, custom, encodeFunctionData, erc20Abi, type Address, type Abi } from "viem";
 import { useWallet } from "../dashboard/use-wallet";
@@ -12,7 +13,7 @@ export function useVaultAction(address: Address | undefined, refresh: () => void
   const wallet = useWallet(); const guard = useRef(false);
   const [completed,setCompleted] = useState<PendingAction>();
   const [transaction,setTransaction] = useState<PendingAction>(); const [phase,setPhase] = useState("idle"); const [error,setError] = useState(""); const [terminal,setTerminal] = useState(false);
-  const key = `lurro:workflow:pending:${address?.toLowerCase()}`;
+  const key = pendingStorageKey("workflow",address);
   useEffect(() => { try { const tx = restoreAction(sessionStorage.getItem(key),address); if (tx) {
     // Recover public transaction metadata without resubmitting the action.
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -31,13 +32,14 @@ export function useVaultAction(address: Address | undefined, refresh: () => void
       setCompleted({ ...tx,hash:receipt.transactionHash }); setTransaction(undefined); setTerminal(false); setPhase("confirmed"); onConfirmed(); refresh(); try { sessionStorage.removeItem(key); } catch { /* Optional storage. */ }
     } catch(e) { setError(message(e)); setPhase("idle"); } finally { guard.current = false; }
   }
-  async function send(action: VaultAction) {
+  async function send(action: VaultAction, mainnetAcknowledged = false) {
     if (guard.current || transaction || !address || !wallet.account || !wallet.provider) return;
     try { const saved = restoreAction(sessionStorage.getItem(key),address); if (saved) { setTransaction(saved); return; } } catch { /* Live guards remain. */ }
     guard.current = true; setPhase("checking"); setError(""); let tx: PendingAction | undefined;
     try {
+      assertWriteAccess(mainnetAcknowledged);
       const accounts = await wallet.provider.request({ method:"eth_accounts" });
-      if (Number(await wallet.provider.request({ method:"eth_chainId" })) !== chain.id || await arcClient.getChainId() !== chain.id) throw new Error("Switch to Arc Testnet first.");
+      if (Number(await wallet.provider.request({ method:"eth_chainId" })) !== chain.id || await arcClient.getChainId() !== chain.id) throw new Error(`Switch to ${network.label} first.`);
       if (!Array.isArray(accounts) || String(accounts[0]).toLowerCase() !== wallet.account.toLowerCase()) throw new Error("Your wallet account changed. Review the action again.");
       const current = await readWorkflow(address);
       if (!actionAllowed(current,wallet.account,action)) throw new Error("The action is no longer eligible. Refresh the project and review its current state.");

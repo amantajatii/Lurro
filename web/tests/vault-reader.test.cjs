@@ -7,7 +7,7 @@ const ts = require('typescript');
 function source(file, resolve = require) {
   const code = ts.transpileModule(fs.readFileSync(path.join(__dirname, '../lib', file), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
   const exports = {};
-  new Function('require', 'exports', code)(resolve, exports);
+  new Function('require', 'exports', code)(name => name === "./network" ? source("network.ts") : resolve(name), exports);
   return exports;
 }
 const abi = source('vault-abi.ts');

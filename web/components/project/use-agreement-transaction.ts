@@ -1,4 +1,5 @@
 "use client";
+import { network, pendingStorageKey, assertWriteAccess } from "../../lib/network";
 import { useEffect, useRef, useState } from "react";
 import { createWalletClient, custom, type Address, type Hex } from "viem";
 import { useWallet } from "../dashboard/use-wallet";
@@ -17,7 +18,7 @@ export function useAgreementTransaction(address: Address | undefined, refresh: (
   const [error, setError] = useState("");
   const [failedReceipt, setFailedReceipt] = useState(false);
   const sending = useRef(false);
-  const storageKey = `lurro:agreement:pending:${address?.toLowerCase()}`;
+  const storageKey = pendingStorageKey("agreement",address);
   useEffect(() => {
     try {
       const saved = restoreAgreementTransaction(sessionStorage.getItem(storageKey), address);
@@ -61,10 +62,11 @@ export function useAgreementTransaction(address: Address | undefined, refresh: (
     sending.current = true; setPhase("checking"); setError("");
     let submitted: Pending | undefined;
     try {
+      assertWriteAccess(acknowledged);
       if (!acknowledged) throw new Error("Review and acknowledge the agreement before sending an action.");
       const accounts = await wallet.provider.request({ method: "eth_accounts" });
-      const network = Number(await wallet.provider.request({ method: "eth_chainId" }));
-      if (network !== chain.id || await arcClient.getChainId() !== chain.id) throw new Error("Switch your wallet to Arc Testnet.");
+      const walletNetwork = Number(await wallet.provider.request({ method: "eth_chainId" }));
+      if (walletNetwork !== chain.id || await arcClient.getChainId() !== chain.id) throw new Error(`Switch your wallet to ${network.label}.`);
       if (!Array.isArray(accounts) || String(accounts[0]).toLowerCase() !== wallet.account.toLowerCase()) throw new Error("Your account changed. Review this agreement with the current wallet.");
       const current = await readAgreement(address);
       if (current.termsHash !== snapshot.termsHash || current.vault.address !== snapshot.vault.address) throw new Error("The agreement snapshot changed. Refresh and review again.");
