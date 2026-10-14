@@ -81,6 +81,7 @@ export function Navigation() {
         <button ref={resourcesTrigger} type="button" aria-expanded={panel === "resources"} aria-controls="landing-resources-menu" onClick={event => clickPanel("resources", event)}>Resources<HiOutlineChevronDown aria-hidden="true" /></button>
         {panel === "resources" && <div id="landing-resources-menu" className="landing-mega-menu landing-resources-menu"><div className="landing-menu-heading"><span>EXPLORE LURRO</span></div><div className="landing-feature-grid">{resources.map(item => <FeatureLink key={item.title} {...item} onNavigate={close} />)}</div></div>}
       </div>
+      <Link href="/docs/" onClick={close}>Docs</Link>
       <Link href="/#how-it-works" onClick={close}>How it works</Link>
       <Link href="/#use-cases" onClick={close}>Use cases</Link>
       <div className="landing-mobile-actions"><Link href="/app/" className="button button-secondary" onClick={close}>Open app</Link><Link href="/app/new/" className="button" onClick={close}>Create project</Link></div>
