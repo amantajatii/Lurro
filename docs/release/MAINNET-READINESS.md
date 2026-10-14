@@ -154,3 +154,7 @@ Public origin/main now contains c91e264ae117c24bafd3d68a6a64322fe66d4be4 (docume
 ## Desktop smoke checkpoint
 
 Actual native Brave checks completed for Mainnet labels, Rabby connection, landing/product/app navigation, every project route empty state, required/duplicate-role form validation, valid single-recipient review and deployment disabled even after acknowledgement. A Testnet vault was not verified on Mainnet and no Testnet balance/receipt appeared. Details are in [DESKTOP-SMOKE.md](DESKTOP-SMOKE.md). Console contains wallet-extension provider conflict and listener warnings. Disconnect/wrong-network recovery and positive live Mainnet project states remain unverified; this is a partial smoke test, not an all-gates PASS or broadcast approval. No Mainnet transaction occurred.
+
+## Owner desktop confirmation
+
+The owner subsequently reported that disconnect succeeds and wrong-network connection automatically switches to Arc. Record both as PASS with manual owner evidence, not independent automation. The inspected console extension conflict and untested positive Mainnet project states remain separately disclosed. Mainnet writes remain disabled; this confirmation is not deployment/broadcast authorization.
