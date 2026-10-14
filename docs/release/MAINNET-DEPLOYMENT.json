@@ -1,0 +1,71 @@
+{
+  "network": "Arc Mainnet",
+  "chainId": 5042,
+  "hash": "0xd2e7a10cf0ce913882d633534f9603373c72bf5b11341a218257907ea8bc54a9",
+  "status": "success",
+  "deployer": "0xe22a343a3B347c13fE26a1Cb3530867c012140cb",
+  "predictedVault": "0x7C9DfBE425c170e49Da68459A72e4F7e9f58DD85",
+  "sourceCommit": "0a8f0d8ee1058ba04158b9337fe4e4f585f0749c",
+  "creationBytecodeHash": "0x30d6d7e4c3dfd761fc3d4def540ae62ac513195cc9ee98dd665d6b4e335c8f70",
+  "expectedTermsHash": "0x880bcd37d190e23939806a5943a03f69908d14215c632a2d49806c8ccd32584b",
+  "documentHash": "0x9ea20134bb9c9be30d39d9850da79810326dedfbfd17c6d4a0f8d80bcd9ab455",
+  "maxDeploymentCostUSDC": 0.09444458853727522,
+  "authorization": "Owner explicitly requested deploy mainnet dulu; deployment only",
+  "explorer": "https://explorer.arc.io/tx/0xd2e7a10cf0ce913882d633534f9603373c72bf5b11341a218257907ea8bc54a9",
+  "contractAddress": "0x7c9dfbe425c170e49da68459a72e4f7e9f58dd85",
+  "block": "25950620",
+  "gasUsed": "3252346",
+  "effectiveGasPrice": "20000001153",
+  "deploymentCostUSDC": 0.06504692374995494,
+  "events": [
+    {
+      "eventName": "ProjectCreated",
+      "args": {
+        "termsHash": "0x880bcd37d190e23939806a5943a03f69908d14215c632a2d49806c8ccd32584b",
+        "funder": "0xe22a343a3B347c13fE26a1Cb3530867c012140cb",
+        "contractValue": "1000000"
+      },
+      "address": "0x7c9dfbe425c170e49da68459a72e4f7e9f58dd85",
+      "topics": [
+        "0x0180774375ef39389cb651d758650eb357746210f60ee333a675d3b6c4343b25",
+        "0x880bcd37d190e23939806a5943a03f69908d14215c632a2d49806c8ccd32584b",
+        "0x000000000000000000000000e22a343a3b347c13fe26a1cb3530867c012140cb"
+      ],
+      "data": "0x00000000000000000000000000000000000000000000000000000000000f4240",
+      "blockHash": "0xea5cdc6f8ccc445df8701e9a6076a17f1a8e55c6a172b3fa43875e2b8749ccfb",
+      "blockNumber": "25950620",
+      "blockTimestamp": "1791995349",
+      "transactionHash": "0xd2e7a10cf0ce913882d633534f9603373c72bf5b11341a218257907ea8bc54a9",
+      "transactionIndex": 2,
+      "logIndex": 4,
+      "removed": false
+    }
+  ],
+  "verifiedAtBlock": "25950627",
+  "runtimeHash": "0x6c4da87183cc2c805c13c2610008c349f085bb9d5289b3b31c1f4cd193668c66",
+  "runtimeMatches": true,
+  "termsMatch": true,
+  "agreementLocked": false,
+  "acceptanceCount": 0,
+  "accounting": [
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0"
+  ],
+  "vaultUSDCBalance": "0",
+  "funderBalanceAfterUSDC": 5.488425076250046,
+  "sourceVerification": {
+    "provider": "Sourcify",
+    "status": "exact_match",
+    "chainId": 5042,
+    "address": "0x7C9DfBE425c170e49Da68459A72e4F7e9f58DD85",
+    "verificationId": "5611443c-44d3-41ca-ac91-ebd6bf0929c5",
+    "verifiedAt": "2026-10-14T16:33:13Z",
+    "url": "https://sourcify.dev/server/v2/verify/5611443c-44d3-41ca-ac91-ebd6bf0929c5",
+    "blockscout": "Blocked by Cloudflare HTTP 403; no badge claimed",
+    "etherscan": "Submitted automatically by Sourcify; final external status not checked"
+  }
+}

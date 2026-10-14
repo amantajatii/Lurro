@@ -1,0 +1,50 @@
+{
+  "schema": "LURRO_PROJECT_DOCUMENT_V1_2",
+  "chainId": 5042,
+  "name": "Lurro Mainnet Desktop Proof",
+  "description": "Owner-controlled, unaudited, desktop-only technical proof of an immutable project agreement and a one-USDC milestone payment on Arc Mainnet. This draft is for owner review, not authorization to deploy or move funds.",
+  "recipients": [
+    {
+      "address": "0x67D1086B3A620e984e6d5147A1481Cd1375cbd81",
+      "name": "Demo recipient"
+    }
+  ],
+  "scopes": [
+    {
+      "title": "Agreement-to-settlement desktop proof",
+      "scope": "Demonstrate the Lurro desktop lifecycle on Arc Mainnet: every named party reviews and accepts the exact agreement; the funder deposits one USDC; the milestone is fully reserved; the named recipient submits technical evidence; the verifier reviews it; payout occurs only after the unchanged challenge/arbitration rules authorize it. Evidence must include the vault address, transaction hashes, and desktop screenshots of agreement, funding, evidence review, and settlement. This is a technical proof operated by the owner, not a claim of independent users, an independent audit, or automatic work verification."
+    }
+  ],
+  "terms": {
+    "projectSalt": "0x47d735a1e68484e611be300be816a906cff281e721d4cc45196dc5217dadda4d",
+    "funder": "0xe22a343a3B347c13fE26a1Cb3530867c012140cb",
+    "usdcToken": "0x3600000000000000000000000000000000000000",
+    "verifier": "0x89b055f6603Bd58083b5212BD736653cbdcEAC3c",
+    "primaryArbiter": "0x3774cd6e6E32329Ba901A43987DfC7720BF97bdF",
+    "backupArbiter": "0xa999630cE9f2EA1E8f76914537c9dcaBD1c1b306",
+    "recipients": [
+      "0x67D1086B3A620e984e6d5147A1481Cd1375cbd81"
+    ],
+    "milestones": [
+      {
+        "submitter": "0x67D1086B3A620e984e6d5147A1481Cd1375cbd81",
+        "submissionDeadline": "1792076931",
+        "finalEvidenceDeadline": "1792681731",
+        "scopeHash": "0x5dc0c5cb355e72385133a2d2f7f578078a9c083f9e64b3932e5a714066e61b0e",
+        "recipientAmounts": [
+          "1000000"
+        ]
+      }
+    ],
+    "reviewPeriodSeconds": 259200,
+    "approvalChallengeSeconds": 172800,
+    "rejectionChallengeSeconds": 172800,
+    "backupDelaySeconds": 259200,
+    "arbitrationPeriodSeconds": 604800,
+    "cancellationProposalSeconds": 604800,
+    "maxEvidenceRevisions": 3,
+    "fallbackPolicy": 0,
+    "cancellationPolicy": 0,
+    "recoveryPolicy": 0
+  }
+}

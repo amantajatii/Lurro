@@ -158,3 +158,9 @@ Actual native Brave checks completed for Mainnet labels, Rabby connection, landi
 ## Owner desktop confirmation
 
 The owner subsequently reported that disconnect succeeds and wrong-network connection automatically switches to Arc. Record both as PASS with manual owner evidence, not independent automation. The inspected console extension conflict and untested positive Mainnet project states remain separately disclosed. Mainnet writes remain disabled; this confirmation is not deployment/broadcast authorization.
+
+## Subsequent explicitly authorized deployment
+
+The owner later explicitly requested Mainnet deployment only. That new instruction superseded the original no-broadcast constraint for deployment alone. A successful unfunded/unlocked vault was deployed at 0x7c9dfbe425c170e49da68459a72e4f7e9f58dd85, block 25,950,620, cost ~0.065047 USDC. Runtime, terms and zero accounting were verified independently. No other Mainnet action occurred, and no frontend write flag was enabled. See [MAINNET-DEPLOYMENT.md](MAINNET-DEPLOYMENT.md) for receipt/provenance and pending explorer verification. Historical NO-GO/read-only entries above describe their earlier checkpoints, not this later user-authorized transaction.
+
+Source verification subsequently completed on Sourcify: creation/runtime exact_match, chain 5042, verified 14 October 2026 16:33:13 UTC. Arc Blockscout API remains Cloudflare-blocked; its badge is not claimed.
