@@ -10,8 +10,6 @@ contract DeployMainnetTest is VaultFixture {
 
     function configure() internal {
         deployment = new DeployMainnetProjectVault();
-        vm.setEnv("LURRO_DEPLOYER", vm.toString(FUNDER));
-        vm.setEnv("LURRO_TERMS_FILE", "out/mainnet-script-test.hex");
         vm.writeFile("out/mainnet-script-test.hex", vm.toString(abi.encode(_terms())));
     }
 
@@ -24,29 +22,27 @@ contract DeployMainnetTest is VaultFixture {
     function testMainnetDeploymentGuardsAndNoImplicitFunds() public {
         configure();
         vm.chainId(5042);
-        vm.setEnv("LURRO_DEPLOYER", vm.toString(OUTSIDER));
         vm.expectRevert("Signer must be funder");
-        deployment.run();
-        vm.setEnv("LURRO_DEPLOYER", vm.toString(FUNDER));
+        deployment.run("out/mainnet-script-test.hex", OUTSIDER);
         ProjectVault.ProjectTerms memory terms = _terms();
         terms.usdcToken = OUTSIDER;
         vm.writeFile("out/mainnet-script-test.hex", vm.toString(abi.encode(terms)));
         vm.expectRevert("Unexpected USDC");
-        deployment.run();
+        deployment.run("out/mainnet-script-test.hex", FUNDER);
         terms = _terms();
         terms.verifier = FUNDER;
         vm.writeFile("out/mainnet-script-test.hex", vm.toString(abi.encode(terms)));
         vm.expectRevert(ProjectVault.InvalidInput.selector);
-        deployment.run();
+        deployment.run("out/mainnet-script-test.hex", FUNDER);
         vm.stopBroadcast();
         terms = _terms();
         terms.recoveryPolicy = 1;
         vm.writeFile("out/mainnet-script-test.hex", vm.toString(abi.encode(terms)));
         vm.expectRevert(ProjectVault.InvalidInput.selector);
-        deployment.run();
+        deployment.run("out/mainnet-script-test.hex", FUNDER);
         vm.stopBroadcast();
         vm.writeFile("out/mainnet-script-test.hex", vm.toString(abi.encode(_terms())));
-        ProjectVault created = deployment.run();
+        ProjectVault created = deployment.run("out/mainnet-script-test.hex", FUNDER);
         assertEq(created.deploymentChainId(), 5042);
         assertEq(created.getTerms().funder, FUNDER);
         assertFalse(created.agreementLocked());

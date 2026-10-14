@@ -118,3 +118,7 @@ accept agreements or reserve milestones. Run a fork/simulation with no
 `--broadcast` first; the release candidate, actual terms, signer and budget still
 require owner review before any Mainnet broadcast. Local mocked-token script
 tests establish guards and absence of implicit funding, not Mainnet operation.
+
+The explicit overload `run(string,address)` accepts the public terms-file path
+and funder address directly, avoiding process-global environment mutation in
+fork tests. Both overloads enforce the same Mainnet and funder guards.

@@ -9,9 +9,14 @@ import {ProjectVault} from "../src/ProjectVault.sol";
 contract DeployMainnetProjectVault is Script {
     function run() external returns (ProjectVault vault) {
         require(block.chainid == 5042, "Arc Mainnet only");
-        address deployer = vm.envAddress("LURRO_DEPLOYER");
+        return run(vm.envString("LURRO_TERMS_FILE"), vm.envAddress("LURRO_DEPLOYER"));
+    }
+
+    /// @notice Explicit public parameters also support fork tests without process-global env mutation.
+    function run(string memory termsFile, address deployer) public returns (ProjectVault vault) {
+        require(block.chainid == 5042, "Arc Mainnet only");
         require(deployer != address(0), "Configure deployment signer");
-        bytes memory encoded = vm.parseBytes(vm.readFile(vm.envString("LURRO_TERMS_FILE")));
+        bytes memory encoded = vm.parseBytes(vm.readFile(termsFile));
         ProjectVault.ProjectTerms memory terms = abi.decode(encoded, (ProjectVault.ProjectTerms));
         require(terms.funder == deployer, "Signer must be funder");
         require(terms.usdcToken == 0x3600000000000000000000000000000000000000, "Unexpected USDC");
