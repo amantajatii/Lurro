@@ -31,7 +31,7 @@ export async function readVault(address: Address) {
   const t = terms as Extract<typeof terms, { funder: Address }>;
   const a = accounting as readonly [bigint, bigint, bigint, bigint, bigint, bigint];
   if (schema !== keccak256(toHex("LURRO_PROJECT_TERMS_V1_2")) || deploymentChain !== BigInt(chain.id) || t.usdcToken.toLowerCase() !== "0x3600000000000000000000000000000000000000") throw new Error("This address does not report a supported Lurro v1.2 Arc Testnet vault.");
-  if (t.milestones.length < 1 || t.milestones.length > 3 || t.recipients.length < 2 || t.recipients.length > 5) throw new Error("This address does not report supported P0 milestone and recipient limits.");
+  if (t.milestones.length < 1 || t.milestones.length > 3 || t.recipients.length < 1 || t.recipients.length > 5) throw new Error("This address does not report supported P0 milestone and recipient limits.");
   if (a[0] !== a.slice(1).reduce((sum, amount) => sum + amount, 0n)) throw new Error("Vault accounting is inconsistent. Summary withheld.");
   const milestones = await Promise.all(t.milestones.map((m, index) => client.readContract({ address, abi: vaultAbi, functionName: "effectiveStatus", args: [BigInt(index)], blockNumber: block.number }).then(status => ({ ...m, status, index }))));
   const actors = [t.funder, t.verifier, t.primaryArbiter, t.backupArbiter, ...t.recipients];

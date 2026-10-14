@@ -25,7 +25,7 @@ Dependency directories, compiled output, test vectors, broadcasts and secrets ar
 
 ## Fixed agreement
 
-`ProjectTerms` in `src/ProjectVault.sol` is the exact ABI schema. Recipients must be sorted numerically by address; roles are unique and separate from recipients. One funder, 2–5 recipients, 1–3 chronological milestones. Constructor must be deployed by the funder on Arc Testnet (5042002) or Mainnet (5042), using USDC `0x3600000000000000000000000000000000000000`, whose ERC-20 interface reports 6 decimals.
+`ProjectTerms` in `src/ProjectVault.sol` is the exact ABI schema. Recipients must be sorted numerically by address; roles are unique and separate from recipients. One funder, 1–5 recipients, 1–3 chronological milestones. Constructor must be deployed by the funder on Arc Testnet (5042002) or Mainnet (5042), using USDC `0x3600000000000000000000000000000000000000`, whose ERC-20 interface reports 6 decimals.
 
 All values are USDC integer base units; 1 USDC = 1,000,000. All dates are Unix UTC seconds. Preset durations are constructor-validated: review 72h, approval/rejection challenge 48h, backup activation 72h, arbitration/proposal expiry 7d, final evidence deadline = submission deadline + 7d, maximum evidence revisions 3. Unsupported policies/durations revert.
 

@@ -35,7 +35,7 @@ Dependency audit (13 October 2026): the RainbowKit/Wagmi dependency tree has 22 
 
 ## Create Project `/app/new/`
 
-Four steps define project metadata, distinct role wallets, 2–5 recipients, and 1–3 milestones before an immutable review. Allocations use exact six-decimal BigInt amounts; recipients are sorted numerically with their allocations preserved. Each recipient needs an entitlement; each milestone needs a recipient submitter, scope hash, future increasing submission deadline and a final evidence deadline exactly seven days later. P0 v1.2 policy windows are fixed.
+Four steps define project metadata, distinct role wallets, 1–5 recipients, and 1–3 milestones before an immutable review. Allocations use exact six-decimal BigInt amounts; recipients are sorted numerically with their allocations preserved. Each recipient needs an entitlement; each milestone needs a recipient submitter, scope hash, future increasing submission deadline and a final evidence deadline exactly seven days later. P0 v1.2 policy windows are fixed.
 
 The generated UTF-8 agreement JSON is downloadable; its exact bytes produce `signedDocumentHash`. Scope hashes use the trimmed UTF-8 scope text included in that document. This is a document commitment, not a signature or acceptance. Preserve and share the exact document with the assigned parties; acceptance/locking will be separate on-chain steps. Metadata is in that document, not a project directory or backend.
 
@@ -69,7 +69,7 @@ Uses the shared AppShell/UI components and a reusable query/snapshot hook also u
 
 File selection checks `keccak256(exactFileBytes)` locally against `signedDocumentHash`. A generated Lurro JSON document additionally checks chain, every encoded term and each scope commitment against the vault before displaying names/scope text. External PDF/text/Markdown documents can be checked by exact hash and read/downloaded locally. Uploading a file never sends it to a server or RPC. User acknowledgement binds to the selected vault, canonical terms hash and wallet; changing account requires acknowledgement again.
 
-Before enabling accept/lock, the page recomputes the canonical v1.2 terms hash (`schema, chainId, vault, ProjectTerms`) and compares deployed runtime bytecode with the compiled prototype, normalizing only compiler-declared immutable ranges. This identifies this exact build, not an independent audit. Regenerate the write ABI/runtime fingerprint after `forge build` with `node web/scripts/generate-agreement.cjs`.
+Before enabling accept/lock, the page recomputes the canonical v1.2 terms hash (`schema, chainId, vault, ProjectTerms`) and compares deployed runtime bytecode with the compiled prototype, normalizing only compiler-declared immutable ranges. The matcher accepts the current 1–5-recipient build and the exact previous 2–5-recipient build, retaining its separately pinned fingerprint for existing vaults. This identifies known builds, not an independent audit. Regenerate the write ABI/runtime fingerprint after `forge build` with `node web/scripts/generate-agreement.cjs`.
 
 Accept is limited to an unaccepted named party with a matching document. Lock is permissionless after all required parties have accepted and counts agree. Preflight rereads live state, code, hash, account and chain, then simulates the exact method before requesting wallet confirmation. These actions do not deposit USDC or approve token allowances. Pending action metadata is saved per vault in session storage; no keys or agreement bytes are stored by this page.
 

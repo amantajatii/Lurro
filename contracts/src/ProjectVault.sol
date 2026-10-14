@@ -172,7 +172,7 @@ contract ProjectVault is ReentrancyGuard {
     function _validateTerms(ProjectTerms memory t) private view {
         if (
             t.usdcToken != ARC_USDC || IERC20Metadata(t.usdcToken).decimals() != 6 || t.signedDocumentHash == bytes32(0)
-                || t.recipients.length < 2 || t.recipients.length > 5 || t.milestones.length == 0
+                || t.recipients.length < 1 || t.recipients.length > 5 || t.milestones.length == 0
                 || t.milestones.length > 3 || t.reviewPeriodSeconds != 72 hours
                 || t.approvalChallengeSeconds != 48 hours || t.rejectionChallengeSeconds != 48 hours
                 || t.backupDelaySeconds != 72 hours || t.arbitrationPeriodSeconds != 7 days

@@ -56,12 +56,12 @@ test('constructor bundle matches the compiled Solidity artifact and encodes actu
   const data = encodeDeployData({ abi: deploymentAbi, bytecode: vaultBytecode, args: [r.terms] });
   assert.ok(data.startsWith(vaultBytecode)); assert.ok(data.length > vaultBytecode.length);
 });
-test('live Arc constructor simulation accepts the generated P0 terms without broadcasting', { skip: process.env.LIVE_ARC_TEST !== '1' }, async () => {
+test('live Arc constructor simulation accepts one recipient without broadcasting', { skip: process.env.LIVE_ARC_TEST !== '1' }, async () => {
   const { createPublicClient, http } = require('viem');
   const { arcTestnet } = require('viem/chains');
   const client = createPublicClient({ chain: arcTestnet, transport: http('https://rpc.testnet.arc.io', { timeout: 15000 }) });
   const block = await client.getBlock();
-  const d = draft(); d.milestones[0].deadline = new Date((Number(block.timestamp) + 30 * 86400) * 1000).toISOString();
+  const d = draft(); d.recipients = [d.recipients[0]]; d.milestones[0].deadline = new Date((Number(block.timestamp) + 30 * 86400) * 1000).toISOString();
   const r = buildProject(d, salt, Number(block.timestamp));
   const data = encodeDeployData({ abi: deploymentAbi, bytecode: vaultBytecode, args: [r.terms] });
   const result = await client.call({ account: r.terms.funder, data });
@@ -83,4 +83,16 @@ test('step checkmarks follow current valid fields and disappear when fields are 
   assert.deepEqual(completedProjectSteps(d, now), [true, true, false]);
   d.milestones[0].amounts.high = '1'; d.funder = '';
   assert.deepEqual(completedProjectSteps(d, now), [false, true, false]);
+});
+
+test('one recipient builds an exact agreement; empty and six recipients are rejected', () => {
+  const d = draft(); d.recipients = [d.recipients[0]];
+  const r = buildProject(d, salt, now);
+  assert.deepEqual(r.terms.recipients, [addr(6)]);
+  assert.deepEqual(r.terms.milestones[0].recipientAmounts, [1000001n]);
+  assert.equal(r.total, 1000001n);
+  assert.deepEqual(completedProjectSteps(d, now), [true, true, true]);
+  d.recipients = []; assert.throws(() => buildProject(d, salt, now), /1–5/);
+  d.recipients = Array.from({ length: 6 }, (_, i) => ({ id: String(i), name: String(i), address: addr(i + 10) }));
+  assert.throws(() => buildProject(d, salt, now), /1–5/);
 });

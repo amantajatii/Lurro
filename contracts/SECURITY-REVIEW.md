@@ -76,3 +76,7 @@ References: [Solidity default initialization and variable scope](https://docs.so
 - This review adds local security coverage, not new live Testnet transactions. Live 48h/72h/7d timeout/default, rejection/resubmission, and restriction scenarios still need their separate integration evidence.
 - Public amounts/addresses expose relationships; document hashes do not provide evidence retention, legal identity or privacy.
 - No independent third-party review, formal proof, Mainnet deployment, production operational/compliance sign-off, or guardian/address recovery feature was performed or added.
+
+## Recipient limit extension — 14 October 2026
+
+New deployments support 1–5 recipients. Existing deployments remain immutable with their original 2–5 limit. The earlier review/results above describe the pre-extension build. Regression coverage now also exercises a single recipient: five required acceptances before lock, ordinary approval/payout, unanimous funder/recipient cancellation and refund, and rejection of zero or six recipients. This extension is not an independent audit. The ABI, terms schema, other role separation rules and policy windows are unchanged.

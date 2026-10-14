@@ -27,7 +27,7 @@ export function validatePeople(draft: ProjectDraft) {
   return { funder, verifier, primaryArbiter, backupArbiter };
 }
 export function validateRecipients(draft: ProjectDraft) {
-  if (draft.recipients.length < 2 || draft.recipients.length > 5) throw new Error("P0 supports 2–5 recipients.");
+  if (draft.recipients.length < 1 || draft.recipients.length > 5) throw new Error("P0 supports 1–5 recipients.");
   if (new Set(draft.recipients.map(r => r.id)).size !== draft.recipients.length) throw new Error("Duplicate recipient identifiers.");
   const recipients = draft.recipients.map((r, index) => {
     if (!r.name.trim()) throw new Error(`Recipient ${index + 1}: add a name.`);

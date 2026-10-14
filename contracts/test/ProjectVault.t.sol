@@ -61,7 +61,7 @@ contract VaultFixture is Test {
         token.approve(address(vault), type(uint256).max);
     }
 
-    function _terms() internal view returns (ProjectVault.ProjectTerms memory t) {
+    function _terms() internal view virtual returns (ProjectVault.ProjectTerms memory t) {
         t.projectSalt = keccak256("test-project");
         t.signedDocumentHash = keccak256("exact signed document bytes");
         t.funder = FUNDER;
@@ -94,7 +94,7 @@ contract VaultFixture is Test {
         return new ProjectVault(t);
     }
 
-    function _lock() internal {
+    function _lock() internal virtual {
         address[6] memory actors = [FUNDER, R1, R2, VERIFIER, PRIMARY, BACKUP];
         bytes32 hash = vault.termsHash();
         for (uint256 i; i < actors.length; ++i) {
@@ -697,7 +697,7 @@ contract ProjectVaultTest is VaultFixture {
     function testConstructorRejectsInvalidCountsAndAllRoleOverlaps() public {
         ProjectVault.ProjectTerms memory t;
         for (uint256 count; count <= 6; ++count) {
-            if (count >= 2 && count <= 5) continue;
+            if (count >= 1 && count <= 5) continue;
             t = _terms();
             t.recipients = new address[](count);
             vm.expectRevert(ProjectVault.InvalidInput.selector);

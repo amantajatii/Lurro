@@ -1,6 +1,7 @@
 import { encodeAbiParameters, encodeFunctionData, keccak256, toHex, hexToBytes, type Hex } from "viem";
 import { vaultAbi } from "./vault-abi";
 import { agreementAbi, immutableRanges, normalizedRuntimeHash, runtimeLength } from "./agreement-abi";
+import * as legacyRuntime from "./legacy-vault-runtime";
 import { arcClient } from "./arc-client";
 import { chain, readVault, type Vault } from "./vault-reader";
 const termsParameter = vaultAbi.find(item => item.name === "getTerms")!.outputs[0];
@@ -8,10 +9,13 @@ export function computeTermsHash(vault: Vault): Hex {
   return keccak256(encodeAbiParameters([{ type: "bytes32" }, { type: "uint256" }, { type: "address" }, termsParameter], [keccak256(toHex("LURRO_PROJECT_TERMS_V1_2")), BigInt(chain.id), vault.address, vault.terms]));
 }
 export function matchesVaultRuntime(code?: Hex) {
-  if (!code || code.length !== runtimeLength * 2 + 2) return false;
-  const bytes = hexToBytes(code);
-  for (const { start, length } of immutableRanges) bytes.fill(0, start, start + length);
-  return keccak256(toHex(bytes)) === normalizedRuntimeHash;
+  if (!code) return false;
+  return [{ runtimeLength, immutableRanges, normalizedRuntimeHash }, legacyRuntime].some(build => {
+    if (code.length !== build.runtimeLength * 2 + 2) return false;
+    const bytes = hexToBytes(code);
+    for (const { start, length } of build.immutableRanges) bytes.fill(0, start, start + length);
+    return keccak256(toHex(bytes)) === build.normalizedRuntimeHash;
+  });
 }
 export async function readAgreement(address: Vault["address"]) {
   const vault = await readVault(address);
