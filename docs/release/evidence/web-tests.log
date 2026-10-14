@@ -1,0 +1,103 @@
+
+> lurro-web@0.1.0 test
+> node --test tests/*.test.cjs
+
+✔ original document verifies exact bytes, full terms and scope commitments (3.912ms)
+✔ a committed document with different encoded rights cannot enable acceptance (1.011542ms)
+✔ unparseable external documents still require their exact committed bytes (3.721292ms)
+✔ canonical acceptance hashes bind vault address and the complete v1.2 tuple (0.955833ms)
+✔ only named, unaccepted participants with a matching document and trusted vault may accept (1.696125ms)
+✔ lock is permissionless only after all required parties accept, with a consistent count (0.51225ms)
+✔ receipt verification rejects another actor, target, method, terms hash or native value (2.02375ms)
+✔ compiled runtime matcher rejects empty, truncated or modified contract code (16.482625ms)
+Agreement verified at Arc block 67163402; no wallet action broadcast.
+✔ live agreement matches independently recomputed terms hash and compiled P0 runtime (4976.101209ms)
+✔ pending recovery is scoped to Arc Testnet and this vault, and ignores malformed data (2.958ms)
+{"network":"Arc Mainnet","chainId":5042,"block":"25926299","timestamp":"1791983028","usdcDecimals":6,"runtimeMatches":true,"broadcast":false}
+✔ Mainnet RPC and constructor simulation use actual USDC without broadcasting (1621.447458ms)
+(node:32459) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ network selection fails closed and Mainnet never inherits Testnet proof or RPCs (528.85675ms)
+✔ Mainnet write opt-in still requires action acknowledgement; Testnet remains usable (17.585625ms)
+✔ project metadata and pending receipt keys are isolated between environments (100.974291ms)
+✔ receipt recovery refuses other-chain transactions even at an identical vault address (5.648042ms)
+✔ wallet recognizes both chains but initial chain and public RPC follow the app build (992.806125ms)
+✔ Mainnet agreement document commits to chain 5042 and changes its exact document hash (29.823917ms)
+✔ sorted addresses retain each recipient allocation and evidence submitter (2.723333ms)
+✔ downloaded document bytes and trimmed scope reproduce on-chain hashes (1.082959ms)
+✔ USDC rejects rounding, negatives, exponents, and uint256 overflow (0.774292ms)
+✔ role collisions, zero/token recipients, missing entitlements and submitters are rejected (1.0895ms)
+✔ expired, equal, and descending submission deadlines are rejected (0.700459ms)
+✔ constructor bundle matches the compiled Solidity artifact and encodes actual terms (5.124416ms)
+Constructor simulated at Arc block 67163401; no transaction broadcast.
+✔ live Arc constructor simulation accepts one recipient without broadcasting (2906.148584ms)
+✔ step checkmarks follow current valid fields and disappear when fields are cleared (0.72025ms)
+✔ one recipient builds an exact agreement; empty and six recipients are rejected (0.788791ms)
+✔ lifetime deposits and refunds are kept separate from funds currently held (1.704416ms)
+✔ recipient paid totals exclude cancelled milestones and retain exact amounts (0.328ms)
+✔ funding progress stays bounded with zero commitments and very large BigInts (0.275084ms)
+✔ closed projects do not advertise upcoming submission deadlines (0.236583ms)
+✔ next steps distinguish funder deposits, permissionless reservations and recipient submission (4.884791ms)
+✔ date display is UTC and tolerates unsupported JS date ranges (0.281583ms)
+(node:32462) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ switching preserves only a supported project section and replaces the vault (0.502083ms)
+✔ saved projects normalize and deduplicate addresses, reject malformed entries and cap at twelve (3.378417ms)
+✔ bookmark writers notify mounted switchers in the same tab and storage changes from another tab (1.171333ms)
+✔ project names are bound to a valid address and document hash, bounded, and resilient to malformed metadata (0.694041ms)
+✔ learning a verified project name updates switchers once without migrating address bookmarks (0.767375ms)
+✔ shared buttons inside a form do not submit it unless explicitly requested (13.588833ms)
+✔ link buttons retain navigation semantics and external-link attributes (1.626375ms)
+✔ shared page heading preserves actionable slots alongside the single page title (1.229458ms)
+✔ agreement: verified receipt releases actions only after verification (102.445333ms)
+✔ agreement: unverified receipt releases actions only after verification (29.104958ms)
+✔ agreement: reverted receipt releases actions only after verification (12.613709ms)
+✔ workflow: verified receipt releases actions only after verification (29.15ms)
+✔ workflow: unverified receipt releases actions only after verification (12.251ms)
+✔ workflow: reverted receipt releases actions only after verification (13.400834ms)
+✔ project refresh preserves display, isolates another vault and drops failed data (7.383833ms)
+✔ agreement: Mainnet release-disabled never opens a signing request (269.186208ms)
+✔ agreement: Mainnet missing-consent never opens a signing request (27.631458ms)
+✔ agreement: Mainnet wrong-wallet-chain never opens a signing request (14.46225ms)
+✔ workflow: Mainnet release-disabled never opens a signing request (14.206417ms)
+✔ workflow: Mainnet missing-consent never opens a signing request (15.734458ms)
+✔ workflow: Mainnet wrong-wallet-chain never opens a signing request (5.834542ms)
+✔ USDC retains six-decimal precision and never converts through floating point (31.401083ms)
+✔ invalid address never reaches the RPC (0.300709ms)
+✔ wallet can hold several actual roles; disconnected users are observers (0.554583ms)
+✔ terminal milestones do not create false pending actions (0.323125ms)
+✔ review and atomic settlement queues follow live statuses and assigned wallet (0.136291ms)
+✔ failed network reads are rejected rather than converted into zero funds (1726.05025ms)
+Read Arc block 67163402; actual test USDC D=2, P=1, F=1
+✔ live Arc proof vault satisfies accounting and exposes terminal statuses (2397.835166ms)
+✔ public reads fall back to documented dRPC when the primary endpoint is blocked (605.273667ms)
+(node:32484) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ RainbowKit QR generator renders its border-zero mobile pairing layout (25.191875ms)
+✔ workspace wallet config hydrates SSR with no persistent or automatically restored connections (1024.224459ms)
+✔ USDC parser preserves exact base units and rejects rounding, signs and exponent input (0.888041ms)
+✔ funding capacity excludes held allocation; deposit requires funder, allowance and token balance (0.404292ms)
+✔ reservation is permissionless but requires complete funding, sequence and future deadline (0.153ms)
+✔ only submitter can submit; resubmission stops at deadline or revision limit (0.117667ms)
+✔ verifier review binds exact evidence and revision and closes at the boundary (0.150416ms)
+✔ challenge eligibility distinguishes submitter, funder and allocated recipients (0.115584ms)
+✔ backup activation and arbitration default honor exact time boundaries (0.104791ms)
+✔ payout and refund are permissionless and cannot redirect the recipient (0.498333ms)
+✔ cancellation requires current proposal, live version, unanimity and eligible signers (0.165917ms)
+✔ audit exports lossless bigint coverage and settlement fields (0.172417ms)
+Verified original event window 66841035 66851034 events 36
+✔ live workflow identity, accounting, governance and original settlement event trail (6940.083459ms)
+✔ receipt matching and pending recovery reject another vault, signer, method, chain or native value (5.799417ms)
+✔ workflow ABI matches the compiled original contract including write methods and event fields (7.062375ms)
+✔ explorer fallback decodes original event bytes and rejects substituted addresses or topics (1.251334ms)
+Explorer fallback verified 36 original events
+✔ live explorer fallback exposes actual payout and refund bytes without RPC history access (2655.798041ms)
+✔ next steps distinguish allowance, vault funds, evidence, payout and actual refund transfer (12.551375ms)
+ℹ tests 79
+ℹ suites 0
+ℹ pass 79
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11463.970209

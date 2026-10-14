@@ -1,0 +1,97 @@
+
+> test
+> forge test && node test/terms-hash.mjs
+
+No files changed, compilation skipped
+
+Ran 2 tests for test/ProjectVaultSingleRecipient.t.sol:ProjectVaultSingleRecipientTest
+[PASS] testRejectEmptyAndSixRecipients() (gas: 151668)
+[PASS] testSingleRecipientPayoutAndUnanimousCancellationRefund() (gas: 668547)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 6.33ms (1.66ms CPU time)
+
+Ran 2 tests for test/Deploy.t.sol:DeployTest
+[PASS] testDeploymentReadsExactEncodedTermsWithoutAcceptingOrFunding() (gas: 7285663)
+[PASS] testDeploymentScriptRejectsMainnet() (gas: 4062320)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 9.76ms (6.82ms CPU time)
+
+Ran 2 tests for test/DeployMainnet.t.sol:DeployMainnetTest
+[PASS] testMainnetDeploymentGuardsAndNoImplicitFunds() (gas: 7676807)
+[PASS] testRejectTestnetBeforeReadingSignerOrTerms() (gas: 4221267)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 10.57ms (6.02ms CPU time)
+
+Ran 7 tests for test/ProjectVaultSecurity.t.sol:ProjectVaultSecurityTest
+[PASS] testContractWalletCanAcceptSubmitAndReceiveAtSameAddress() (gas: 3802477)
+[PASS] testDepositBlocksCallbackReservationOfAlreadyAvailableFunds() (gas: 1099961)
+[PASS] testDisputeFreezesOnlyTargetMilestone() (gas: 744956)
+[PASS] testPayoutBlocksCallbackPayoutOfAnotherEarnedMilestone() (gas: 1454586)
+[PASS] testRefundBlocksCallbackPayoutWithoutTakingEarnedFunds() (gas: 1465844)
+[PASS] testSupersededProposalCannotUsePreviouslyCollectedApprovals() (gas: 661212)
+[PASS] testUnauthorizedArbiterCannotChooseRefund() (gas: 522651)
+Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 131.69ms (3.18ms CPU time)
+
+Ran 36 tests for test/ProjectVault.t.sol:ProjectVaultTest
+[PASS] testAcceptanceRejectsWrongHashOutsiderAndReplay() (gas: 88031)
+[PASS] testArbitersLoseAuthorityAtDeadlineAndApprovedDefaultPays() (gas: 588016)
+[PASS] testCancellationCannotReclaimAnyInFlightMilestone() (gas: 844929)
+[PASS] testChallengeJustBeforeDeadlineAndArbitrationBoundaries() (gas: 584426)
+[PASS] testConstructorRejectsInvalidCountsAndAllRoleOverlaps() (gas: 930022)
+[PASS] testConstructorRejectsInvalidTerms() (gas: 862585)
+[PASS] testDepositCapExcludesQueuedRefundsAndPaidEntitlements() (gas: 626093)
+[PASS] testEarlyCancellationKeepsRejectedMilestoneResubmittable() (gas: 740910)
+[PASS] testEarlyCancellationRequiresUnanimousCurrentNonRevokedApprovals() (gas: 703828)
+[PASS] testEarnedAtExactChallengeDeadlineWithoutFinalization() (gas: 738856)
+[PASS] testEveryParticipantCanEscalateButNoGenericDisputeExists() (gas: 552779)
+[PASS] testEvidenceRejectResubmitAndExactRevision() (gas: 601403)
+[PASS] testExactSubmissionDeadlineOnlyAllowsExpiry() (gas: 407175)
+[PASS] testExhaustedRevisionClosesIn48HoursRatherThanHardDeadline() (gas: 600096)
+[PASS] testExpiryOnlyRefundsSurplusAndReservationCanSkipCancelledMilestone() (gas: 442333)
+[PASS] testExportsIndependentTermsHashVector() (gas: 32300)
+[PASS] testFeeDepositRevertsAccountingAndTokenTransfer() (gas: 336478)
+[PASS] testFeePayoutRevertsAllFinancialAndTokenEffects() (gas: 556260)
+[PASS] testFinalizationInvalidatesProposalButTimeAloneDoesNot() (gas: 605904)
+[PASS] testFundingRequiresExplicitAcceptanceOfEveryRole() (gas: 386256)
+[PASS] testFuzzChallengeDeadlineHasNoOverlap(uint256) (runs: 1024, μ: 532392, ~: 517589)
+[PASS] testFuzzRecipientSplitsPayExactly(uint256,uint256) (runs: 1024, μ: 3700435, ~: 3700402)
+[PASS] testFuzzRejectsUnsupportedRecoveryPolicy(uint8) (runs: 1024, μ: 82200, ~: 82200)
+[PASS] testFuzzReservationNeedsFullAmount(uint256) (runs: 1024, μ: 385304, ~: 372936)
+[PASS] testLateRejectionStillHasFull48HourChallengeWindow() (gas: 630212)
+[PASS] testLaterReservationCannotBypassEarlierPlannedMilestone() (gas: 426449)
+[PASS] testMaximumFiveRecipientsAndThreeMilestonesSettleExactly() (gas: 4681630)
+[PASS] testProposalExpiresAtEqualityAndNoStateVersionChange() (gas: 388949)
+[PASS] testRejectionClosesAtHardDeadlineAndRefunds() (gas: 530256)
+[PASS] testReservedExpiryCanRefundThenFundRemainingMilestone() (gas: 478315)
+[PASS] testReviewTimeoutBoundaryAndParticipantAuthorization() (gas: 498813)
+[PASS] testSecondRecipientFailureRollsBackWholePayout() (gas: 599510)
+[PASS] testTermsHashBindsVaultAndChain() (gas: 6435674)
+[PASS] testUnapprovedDefaultQueuesRefundAndFailurePreservesLiability() (gas: 509122)
+[PASS] testUnsolicitedTokensNeverBecomeProjectFunding() (gas: 387150)
+[PASS] testZeroAllocationCannotChallengeApprovalButCanEscalateTimeout() (gas: 3884427)
+Suite result: ok. 36 passed; 0 failed; 0 skipped; finished in 522.47ms (1.10s CPU time)
+
+Ran 5 tests for test/ProjectVaultInvariant.t.sol:ProjectVaultInvariantTest
+[PASS] invariantAccountingAndImmutableDestinations() (runs: 512, calls: 65536, reverts: 0)
+
+╭--------------+--------------+-------+---------+----------╮
+| Contract     | Selector     | Calls | Reverts | Discards |
++==========================================================+
+| VaultHandler | cancelFuture | 10849 | 0       | 0        |
+|--------------+--------------+-------+---------+----------|
+| VaultHandler | donate       | 10930 | 0       | 0        |
+|--------------+--------------+-------+---------+----------|
+| VaultHandler | elapse       | 11002 | 0       | 0        |
+|--------------+--------------+-------+---------+----------|
+| VaultHandler | failedPayout | 11011 | 0       | 0        |
+|--------------+--------------+-------+---------+----------|
+| VaultHandler | progress     | 10726 | 0       | 0        |
+|--------------+--------------+-------+---------+----------|
+| VaultHandler | refund       | 11018 | 0       | 0        |
+╰--------------+--------------+-------+---------+----------╯
+
+[PASS] testHandlerCompletesPayoutAndRefundWithoutReverts() (gas: 948760)
+[PASS] testHandlerExpiresReservedMilestoneWithoutSubmittingAgain() (gas: 457805)
+[PASS] testHandlerRejectionDisputeAndRefundAreReachable() (gas: 629662)
+[PASS] testHandlerRejectionResubmissionDisputeAndPayoutAreReachable() (gas: 849770)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 10.04s (10.04s CPU time)
+
+Ran 6 test suites in 10.05s (10.72s CPU time): 54 tests passed, 0 failed, 0 skipped (54 total tests)
+Solidity/viem agreement encoding and hash checks passed.

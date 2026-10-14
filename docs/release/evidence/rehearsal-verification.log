@@ -1,0 +1,24 @@
+{
+  "block": "67165516",
+  "timestamp": "1791984101",
+  "constructorInputMatches": true,
+  "termsMatch": true,
+  "runtimeNormalizedMatches": true,
+  "runtimeHash": "0x50687b3bdae1cfbc5bfab37b8f98b20eb260682e6de13d8a78959d2b677395fa",
+  "accounting": [
+    "2000000",
+    "0",
+    "0",
+    "0",
+    "1000000",
+    "1000000"
+  ],
+  "balance": "0",
+  "receiptCount": 22,
+  "approvedAt": "1791983136",
+  "challengeAt": "1791983137",
+  "resolvedAt": "1791983139",
+  "unchallengedEarliestPayout": "1792155936",
+  "arbitrationDefaultEarliest": "1792587937",
+  "sourceCommit": "dc0b1153bdf3902405a65fa43baab0ce0354d422"
+}

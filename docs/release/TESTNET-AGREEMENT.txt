@@ -1,0 +1,1 @@
+Lurro P0 v1.2 Arc Testnet integration self-test. All six roles are automated test wallets. Two 1-USDC milestones; 60/40 allocation; fixed v1.2 policies. No real client, independent verifier, or commercial agreement is represented.

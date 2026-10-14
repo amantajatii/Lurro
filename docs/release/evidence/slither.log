@@ -1,0 +1,98 @@
+
+Detector: uninitialized-local
+ProjectVault._validateTerms(ProjectVault.ProjectTerms).total (src/ProjectVault.sol#213) is a local variable never initialized
+ProjectVault._validateTerms(ProjectVault.ProjectTerms).entitled (src/ProjectVault.sol#198) is a local variable never initialized
+ProjectVault._validateTerms(ProjectVault.ProjectTerms).validSubmitter (src/ProjectVault.sol#212) is a local variable never initialized
+ProjectVault.constructor(ProjectVault.ProjectTerms).amount (src/ProjectVault.sol#160) is a local variable never initialized
+ProjectVault.constructor(ProjectVault.ProjectTerms).total (src/ProjectVault.sol#158) is a local variable never initialized
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-local-variables
+
+Detector: calls-loop
+ProjectVault._transferExact(address,uint256) (src/ProjectVault.sol#544-552) has external calls inside a loop: beforeVault = token.balanceOf(address(this)) (src/ProjectVault.sol#546)
+	Calls stack containing the loop:
+		ProjectVault.executePayout(uint256)
+ProjectVault._transferExact(address,uint256) (src/ProjectVault.sol#544-552) has external calls inside a loop: beforeRecipient = token.balanceOf(to) (src/ProjectVault.sol#547)
+	Calls stack containing the loop:
+		ProjectVault.executePayout(uint256)
+ProjectVault._transferExact(address,uint256) (src/ProjectVault.sol#544-552) has external calls inside a loop: token.balanceOf(address(this)) + amount != beforeVault || token.balanceOf(to) != beforeRecipient + amount (src/ProjectVault.sol#549)
+	Calls stack containing the loop:
+		ProjectVault.executePayout(uint256)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+
+Detector: timestamp
+ProjectVault._validateTerms(ProjectVault.ProjectTerms) (src/ProjectVault.sol#172-220) uses timestamp for comparisons
+	Dangerous comparisons:
+	- m.scopeHash == bytes32(0) || m.submissionDeadline <= block.timestamp || (i_scope_3 > 0 && m.submissionDeadline <= t.milestones[i_scope_3 - 1].submissionDeadline) || uint256(m.finalEvidenceDeadline) != uint256(m.submissionDeadline) + 604800 (src/ProjectVault.sol#208-210)
+ProjectVault.effectiveStatus(uint256) (src/ProjectVault.sol#239-245) uses timestamp for comparisons
+	Dangerous comparisons:
+	- m.status == Status.Approved && block.timestamp >= uint256(m.approvedAt) + _terms.approvalChallengeSeconds (src/ProjectVault.sol#241)
+ProjectVault.reserveMilestone(uint256) (src/ProjectVault.sol#314-328) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= _terms.milestones[id].submissionDeadline (src/ProjectVault.sol#317)
+ProjectVault.submitEvidence(uint256,bytes32) (src/ProjectVault.sol#330-337) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= _terms.milestones[id].submissionDeadline (src/ProjectVault.sol#334)
+ProjectVault.resubmitEvidence(uint256,bytes32) (src/ProjectVault.sol#339-346) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= _terms.milestones[id].finalEvidenceDeadline (src/ProjectVault.sol#343)
+ProjectVault._reviewable(uint256,uint32,bytes32) (src/ProjectVault.sol#377-383) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= uint256(m.submittedAt) + _terms.reviewPeriodSeconds (src/ProjectVault.sol#382)
+ProjectVault.challengeRejection(uint256) (src/ProjectVault.sol#385-392) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= rejectionCloseAt(id) (src/ProjectVault.sol#389)
+ProjectVault.challengeApproval(uint256) (src/ProjectVault.sol#394-405) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= uint256(m.approvedAt) + _terms.approvalChallengeSeconds (src/ProjectVault.sol#402)
+ProjectVault.escalateReviewTimeout(uint256) (src/ProjectVault.sol#407-414) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < uint256(m.submittedAt) + _terms.reviewPeriodSeconds (src/ProjectVault.sol#411)
+ProjectVault._openDispute(uint256,ProjectVault.MilestoneState) (src/ProjectVault.sol#416-433) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= uint256(m.approvedAt) + _terms.approvalChallengeSeconds (src/ProjectVault.sol#418)
+ProjectVault.resolveDispute(uint256,bool) (src/ProjectVault.sol#435-446) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= uint256(m.disputeOpenedAt) + _terms.arbitrationPeriodSeconds (src/ProjectVault.sol#439)
+	- msg.sender == _terms.backupArbiter && block.timestamp < uint256(m.disputeOpenedAt) + _terms.backupDelaySeconds (src/ProjectVault.sol#441-442)
+ProjectVault.finalizeDefault(uint256) (src/ProjectVault.sol#448-456) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < uint256(m.disputeOpenedAt) + _terms.arbitrationPeriodSeconds (src/ProjectVault.sol#451)
+ProjectVault.finalizeRejection(uint256) (src/ProjectVault.sol#477-483) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < rejectionCloseAt(id) (src/ProjectVault.sol#480)
+ProjectVault.expireUnsubmitted(uint256) (src/ProjectVault.sol#485-491) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < _terms.milestones[id].submissionDeadline (src/ProjectVault.sol#488)
+ProjectVault._proposal(uint256) (src/ProjectVault.sol#589-594) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= p.expiresAt (src/ProjectVault.sol#592)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Detector: costly-loop
+ProjectVault._cancelMilestone(uint256,ProjectVault.MilestoneState) (src/ProjectVault.sol#493-501) has costly operations inside a loop:
+	- reserved -= _totals[id] (src/ProjectVault.sol#495)
+	Calls stack containing the loop:
+		ProjectVault.executeEarlyCancellation(uint256)
+ProjectVault._queueRefund(uint256) (src/ProjectVault.sol#512-516) has costly operations inside a loop:
+	- refundOwed += amount (src/ProjectVault.sol#514)
+	Calls stack containing the loop:
+		ProjectVault.executeEarlyCancellation(uint256)
+		ProjectVault._cancelMilestone(uint256,ProjectVault.MilestoneState)
+ProjectVault._refundSurplus() (src/ProjectVault.sol#503-510) has costly operations inside a loop:
+	- available -= excess (src/ProjectVault.sol#507)
+	Calls stack containing the loop:
+		ProjectVault.executeEarlyCancellation(uint256)
+		ProjectVault._cancelMilestone(uint256,ProjectVault.MilestoneState)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#costly-operations-inside-a-loop
+
+Detector: cyclomatic-complexity
+ProjectVault._validateTerms(ProjectVault.ProjectTerms) (src/ProjectVault.sol#172-220) has a high cyclomatic complexity (19).
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#cyclomatic-complexity
+
+Detector: cache-array-length
+Loop condition i < _milestones.length (src/ProjectVault.sol#268) should use cached array length instead of referencing `length` member of the storage array.
+ Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#cache-array-length
+. analyzed (7 contracts with 102 detectors), 28 result(s) found
+'forge clean' running (wd: /Users/diazamantajati/Documents/COD-ING/Lurro/contracts)
+'forge config --json' running
+'forge build --build-info --deny never --skip ./test/** ./script/** --force' running (wd: /Users/diazamantajati/Documents/COD-ING/Lurro/contracts)

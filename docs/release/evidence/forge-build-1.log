@@ -1,0 +1,203 @@
+Compiling 40 files with Solc 0.8.30
+Solc 0.8.30 finished in 13.39s
+Compiler run successful!
+
+╭-------------------+------------------+-------------------+--------------------+---------------------╮
+| Contract          | Runtime Size (B) | Initcode Size (B) | Runtime Margin (B) | Initcode Margin (B) |
++=====================================================================================================+
+| CallbackToken     | 2,815            | 3,614             | 21,761             | 45,538              |
+|-------------------+------------------+-------------------+--------------------+---------------------|
+| ParticipantWallet | 461              | 587               | 24,115             | 48,565              |
+|-------------------+------------------+-------------------+--------------------+---------------------|
+| ProjectVault      | 12,270           | 17,175            | 12,306             | 31,977              |
+|-------------------+------------------+-------------------+--------------------+---------------------|
+| SafeERC20         | 57               | 85                | 24,519             | 49,067              |
+|-------------------+------------------+-------------------+--------------------+---------------------|
+| TestUSDC          | 2,444            | 3,236             | 22,132             | 45,916              |
+╰-------------------+------------------+-------------------+--------------------+---------------------╯
+
+note[unsafe-cheatcode]: usage of unsafe cheatcodes that can perform dangerous operations
+  --> test/DeployMainnet.t.sol:13:12
+   |
+13 |         vm.writeFile("out/mainnet-script-test.hex", vm.toString(abi.encode(_terms())));
+   |            ^^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-cheatcode
+
+note[screaming-snake-case-immutable]: immutables should use SCREAMING_SNAKE_CASE
+  --> test/ProjectVaultSecurity.t.sol:48:31
+   |
+48 |     address private immutable owner;
+   |                               ^^^^^ help: consider using: `OWNER`
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-immutable
+
+note[unsafe-cheatcode]: usage of unsafe cheatcodes that can perform dangerous operations
+  --> script/DeployMainnet.s.sol:19:49
+   |
+19 |         bytes memory encoded = vm.parseBytes(vm.readFile(termsFile));
+   |                                                 ^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-cheatcode
+
+note[screaming-snake-case-immutable]: immutables should use SCREAMING_SNAKE_CASE
+  --> src/ProjectVault.sol:85:30
+   |
+85 |     uint256 public immutable deploymentChainId;
+   |                              ^^^^^^^^^^^^^^^^^ help: consider using: `DEPLOYMENT_CHAIN_ID`
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-immutable
+
+note[named-struct-fields]: prefer initializing structs with named fields
+   --> test/ProjectVaultInvariant.t.sol:194:24
+    |
+194 |         targetSelector(FuzzSelector(address(handler), selectors));
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider using named fields: `FuzzSelector({ addr: address(handler), selectors: selectors })`
+    |
+    = help: https://book.getfoundry.sh/reference/forge/forge-lint#named-struct-fields
+
+note[unsafe-cheatcode]: usage of unsafe cheatcodes that can perform dangerous operations
+  --> script/Deploy.s.sol:11:49
+   |
+11 |         bytes memory encoded = vm.parseBytes(vm.readFile(vm.envString("LURRO_TERMS_FILE")));
+   |                                                 ^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-cheatcode
+
+warning[unsafe-typecast]: typecasts that can truncate values should be checked
+  --> test/ProjectVault.t.sol:80:37
+   |
+80 |             uint64 due = deadline + uint64(i * 10 days);
+   |                                     ^^^^^^^^^^^^^^^^^^^
+   |
+   = note: consider disabling this lint if you're certain the cast is safe
+
+           // casting to 'uint64' is safe because [explain why]
+           // forge-lint: disable-next-line(unsafe-typecast)
+
+
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-typecast
+
+note[screaming-snake-case-immutable]: immutables should use SCREAMING_SNAKE_CASE
+  --> src/ProjectVault.sol:86:30
+   |
+86 |     bytes32 public immutable termsHash;
+   |                              ^^^^^^^^^ help: consider using: `TERMS_HASH`
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-immutable
+
+note[unsafe-cheatcode]: usage of unsafe cheatcodes that can perform dangerous operations
+  --> test/DeployMainnet.t.sol:29:12
+   |
+29 |         vm.writeFile("out/mainnet-script-test.hex", vm.toString(abi.encode(terms)));
+   |            ^^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-cheatcode
+
+note[screaming-snake-case-immutable]: immutables should use SCREAMING_SNAKE_CASE
+  --> src/ProjectVault.sol:87:30
+   |
+87 |     uint256 public immutable contractValue;
+   |                              ^^^^^^^^^^^^^ help: consider using: `CONTRACT_VALUE`
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-immutable
+
+note[unsafe-cheatcode]: usage of unsafe cheatcodes that can perform dangerous operations
+  --> test/Deploy.t.sol:10:12
+   |
+10 |         vm.writeFile("out/deploy-test-terms.hex", vm.toString(abi.encode(_terms())));
+   |            ^^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-cheatcode
+
+warning[unsafe-typecast]: typecasts that can truncate values should be checked
+   --> test/ProjectVault.t.sol:762:39
+    |
+762 |             t.recipients[i] = address(uint160(0x800 + i));
+    |                                       ^^^^^^^^^^^^^^^^^^
+    |
+    = note: consider disabling this lint if you're certain the cast is safe
+
+            // casting to 'uint160' is safe because [explain why]
+            // forge-lint: disable-next-line(unsafe-typecast)
+
+
+    = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-typecast
+
+note[unsafe-cheatcode]: usage of unsafe cheatcodes that can perform dangerous operations
+  --> test/Deploy.t.sol:11:12
+   |
+11 |         vm.setEnv("LURRO_TERMS_FILE", "out/deploy-test-terms.hex");
+   |            ^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-cheatcode
+
+note[unsafe-cheatcode]: usage of unsafe cheatcodes that can perform dangerous operations
+  --> test/DeployMainnet.t.sol:34:12
+   |
+34 |         vm.writeFile("out/mainnet-script-test.hex", vm.toString(abi.encode(terms)));
+   |            ^^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-cheatcode
+
+note[unsafe-cheatcode]: usage of unsafe cheatcodes that can perform dangerous operations
+  --> test/DeployMainnet.t.sol:40:12
+   |
+40 |         vm.writeFile("out/mainnet-script-test.hex", vm.toString(abi.encode(terms)));
+   |            ^^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-cheatcode
+
+note[unsafe-cheatcode]: usage of unsafe cheatcodes that can perform dangerous operations
+  --> test/DeployMainnet.t.sol:44:12
+   |
+44 |         vm.writeFile("out/mainnet-script-test.hex", vm.toString(abi.encode(_terms())));
+   |            ^^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-cheatcode
+
+warning[unsafe-typecast]: typecasts that can truncate values should be checked
+   --> test/ProjectVault.t.sol:770:37
+    |
+770 |             uint64 due = deadline + uint64(i * 10 days);
+    |                                     ^^^^^^^^^^^^^^^^^^^
+    |
+    = note: consider disabling this lint if you're certain the cast is safe
+
+            // casting to 'uint64' is safe because [explain why]
+            // forge-lint: disable-next-line(unsafe-typecast)
+
+
+    = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-typecast
+
+note[unwrapped-modifier-logic]: wrap modifier logic to reduce code size
+   --> src/ProjectVault.sol:145:5
+    |
+145 | /     modifier locked() {
+146 | |         if (!agreementLocked) revert InvalidState();
+147 | |         if (block.chainid != deploymentChainId) revert UnsupportedChain();
+148 | |         _;
+149 | |     }
+    | |_____^
+    |
+help: wrap modifier logic to reduce code size
+    |
+145 ~     modifier locked() {
+146 +         _locked();
+147 +         _;
+148 +     }
+149 +
+150 +     function _locked() internal {
+151 +         if (!agreementLocked) revert InvalidState();
+152 +         if (block.chainid != deploymentChainId) revert UnsupportedChain();
+153 +     }
+    |
+    = help: https://book.getfoundry.sh/reference/forge/forge-lint#unwrapped-modifier-logic
+
+note[named-struct-fields]: prefer initializing structs with named fields
+   --> src/ProjectVault.sol:559:37
+    |
+559 |         cancellationProposals[id] = CancellationProposal(stateVersion, expires, false);
+    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider using named fields: `CancellationProposal({ stateVersion: stateVersion, expiresAt: expires, executed: false })`
+    |
+    = help: https://book.getfoundry.sh/reference/forge/forge-lint#named-struct-fields

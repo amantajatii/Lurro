@@ -1,0 +1,82 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "mainnetLabel": false,
+    "writesDisabled": false,
+    "testnetWorkspace": false,
+    "proofVaultShown": false
+  },
+  {
+    "path": "/app/",
+    "status": 200,
+    "mainnetLabel": false,
+    "writesDisabled": false,
+    "testnetWorkspace": false,
+    "proofVaultShown": false
+  },
+  {
+    "path": "/app/new/",
+    "status": 200,
+    "mainnetLabel": false,
+    "writesDisabled": false,
+    "testnetWorkspace": false,
+    "proofVaultShown": false
+  },
+  {
+    "path": "/app/project/",
+    "status": 200,
+    "mainnetLabel": false,
+    "writesDisabled": false,
+    "testnetWorkspace": false,
+    "proofVaultShown": false
+  },
+  {
+    "path": "/app/agreement/",
+    "status": 200,
+    "mainnetLabel": false,
+    "writesDisabled": false,
+    "testnetWorkspace": false,
+    "proofVaultShown": false
+  },
+  {
+    "path": "/app/funding/",
+    "status": 200,
+    "mainnetLabel": false,
+    "writesDisabled": false,
+    "testnetWorkspace": false,
+    "proofVaultShown": false
+  },
+  {
+    "path": "/app/milestones/",
+    "status": 200,
+    "mainnetLabel": false,
+    "writesDisabled": false,
+    "testnetWorkspace": false,
+    "proofVaultShown": false
+  },
+  {
+    "path": "/app/payments/",
+    "status": 200,
+    "mainnetLabel": false,
+    "writesDisabled": false,
+    "testnetWorkspace": false,
+    "proofVaultShown": false
+  },
+  {
+    "path": "/app/governance/",
+    "status": 200,
+    "mainnetLabel": false,
+    "writesDisabled": false,
+    "testnetWorkspace": false,
+    "proofVaultShown": false
+  },
+  {
+    "path": "/app/audit/",
+    "status": 200,
+    "mainnetLabel": false,
+    "writesDisabled": false,
+    "testnetWorkspace": false,
+    "proofVaultShown": false
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "chainId": 5042,
+  "block": "25927584",
+  "timestamp": "1791983679",
+  "gasPrice": "20000000000",
+  "syntheticDeploymentGas": "3489592",
+  "syntheticCostUSDC": 0.06979184,
+  "actualInputs": "PENDING OWNER INPUT",
+  "broadcast": false
+}

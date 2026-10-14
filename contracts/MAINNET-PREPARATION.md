@@ -91,3 +91,7 @@ and then against the live RPC, not inferred from a Testnet fixture.
   operational and participant/jurisdiction review.
 
 No checklist checkbox or GO decision was signed on the owner's behalf.
+
+## Final verification follow-up
+
+This report is historical. The fresh final candidate, new Testnet rehearsal, all 28 individually triaged Slither findings and remaining NO-GO gates are recorded in [MAINNET-READINESS.md](../docs/release/MAINNET-READINESS.md). Final regression adds two handler path checks (54 Solidity tests); production bytecode is unchanged. No Mainnet broadcast or owner GO approval occurred.
