@@ -236,4 +236,40 @@ contract ProjectVaultInvariantTest is StdInvariant, VaultFixture {
         assertEq(handler.completedRefunds(), 1);
         invariantAccountingAndImmutableDestinations();
     }
+
+    function testHandlerRejectionResubmissionDisputeAndPayoutAreReachable() public {
+        handler.progress(0, 100e6);
+        handler.progress(0, 0);
+        handler.progress(0, 0);
+        handler.progress(0, 1);
+        assertEq(uint8(vault.effectiveStatus(0)), uint8(ProjectVault.Status.Rejected));
+        handler.progress(0, 0);
+        assertEq(vault.getMilestone(0).revision, 2);
+        handler.progress(0, 0);
+        handler.progress(0, 0);
+        assertEq(uint8(vault.effectiveStatus(0)), uint8(ProjectVault.Status.Disputed));
+        handler.progress(0, 2);
+        assertEq(uint8(vault.effectiveStatus(0)), uint8(ProjectVault.Status.Claimable));
+        handler.failedPayout();
+        handler.progress(0, 0);
+        assertEq(handler.completedPayments(), 1);
+        assertEq(handler.completedRefunds(), 0);
+        invariantAccountingAndImmutableDestinations();
+    }
+
+    function testHandlerRejectionDisputeAndRefundAreReachable() public {
+        handler.progress(0, 100e6);
+        handler.progress(0, 0);
+        handler.progress(0, 0);
+        handler.progress(0, 1);
+        handler.progress(0, 1);
+        assertEq(uint8(vault.effectiveStatus(0)), uint8(ProjectVault.Status.Disputed));
+        handler.progress(0, 1);
+        assertEq(uint8(vault.effectiveStatus(0)), uint8(ProjectVault.Status.Cancelled));
+        assertEq(vault.refundOwed(), 100e6);
+        handler.refund();
+        assertEq(handler.completedPayments(), 0);
+        assertEq(handler.completedRefunds(), 1);
+        invariantAccountingAndImmutableDestinations();
+    }
 }
