@@ -142,3 +142,11 @@ Network/token definitions checked against [official Arc connection details](http
 - Personally decide whether the limited unaudited POC and remaining live timing assumptions are acceptable. **GO CANDIDATE would still not authorize broadcast**; a separate explicit deployment instruction is required. Mainnet writes remain disabled.
 
 No Mainnet deploy, approval, acceptance, funding, payout or refund was issued during this task. The task ends with this report. Read-only server/evidence and Testnet receipts do not constitute owner release approval.
+
+## Later owner-input checkpoint — 14 October 2026
+
+Owner narrowed scope to desktop-only POC; mobile validation remains untested but is no longer required for that scoped release. Actual one-recipient/one-milestone input (1 USDC, total budget 5 USDC) passed unsigned Mainnet constructor simulation at block 25,943,108. Runtime and populated chain/value/terms-hash immutables matched. Deployment estimate was 3,279,326 gas (~0.065587 USDC at the observed quote). Local input packet and agreement are in ignored `contracts/out/mainnet-input-review/`; the exact submission deadline is 15 October 2026 22:08:51 WIB. Recheck nonce/deadline before any future approved deployment.
+
+Anvil fork could not complete the unmodified USDC deposit: transferFrom reached Arc precompile 0x1800000000000000000000000000000000000001 and failed with invalid opcode locally. Mainnet RPC eth_simulateV1 is unsupported. Full lifecycle cost is a proxy based on the actual creation estimate and observed Testnet workflow gas (~0.089473 USDC gas, ~1.089473 including deposit), not a verified full Mainnet lifecycle. No production rule/token was changed and no Mainnet transaction was broadcast.
+
+Public origin/main now contains c91e264ae117c24bafd3d68a6a64322fe66d4be4 (documentation/navigation added; contract artifact unchanged), so the earlier publication failure is historical. Desktop Mainnet browser validation and explicit owner deployment authorization remain outstanding. This checkpoint does not mark the owner GO or authorize broadcast.
